@@ -2,25 +2,19 @@ import { Component, computed, inject, input } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { RevealService } from '../services/reveal.service';
 
-/** Compte à rebours jours / heures / minutes / secondes jusqu'à `target` (ms). */
+/** Compte à rebours en carrés pleins (or, ou rouge sur /mon-amour) jusqu'à `target` (ms). */
 @Component({
   selector: 'app-countdown',
   imports: [TranslocoPipe],
   template: `
-    <div class="grid grid-cols-4 gap-2 sm:gap-4" role="timer" aria-live="off">
+    <div class="flex justify-center gap-2 sm:gap-3" role="timer" aria-live="off">
       @for (p of parts(); track p.key) {
         <div
-          class="flex flex-col items-center rounded-2xl border px-2 py-3 sm:px-4 sm:py-5"
-          [class]="accent() === 'rose' ? 'border-rose/30 bg-rose/5' : 'border-ciel/25 bg-ciel/5'"
+          class="flex w-16 flex-col items-center rounded-[3px] py-2.5 sm:w-20 sm:py-3"
+          [class]="accent() === 'rose' ? 'bg-rose text-creme' : 'bg-or text-nuit'"
         >
-          <span
-            class="font-sans text-3xl font-semibold tabular-nums sm:text-5xl"
-            [class]="accent() === 'rose' ? 'text-rose' : 'text-ciel'"
-            >{{ p.value }}</span
-          >
-          <span class="mt-1 font-sans text-[10px] tracking-widest text-creme/60 uppercase sm:text-xs">{{
-            'countdown.' + p.key | transloco
-          }}</span>
+          <span class="font-display text-3xl leading-none tabular-nums sm:text-4xl">{{ p.value }}</span>
+          <span class="mt-1 font-sans text-[10px] sm:text-xs">{{ 'countdown.' + p.key | transloco }}</span>
         </div>
       }
     </div>
@@ -29,7 +23,7 @@ import { RevealService } from '../services/reveal.service';
 export class Countdown {
   private readonly clock = inject(RevealService);
   readonly target = input.required<number>();
-  readonly accent = input<'ciel' | 'rose'>('ciel');
+  readonly accent = input<'or' | 'rose'>('or');
 
   protected readonly parts = computed(() => {
     let s = Math.max(0, Math.floor((this.target() - this.clock.now()) / 1000));

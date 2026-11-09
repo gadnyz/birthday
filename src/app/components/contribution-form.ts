@@ -13,14 +13,13 @@ const PROFILE_KEY = 'vn-author';
   imports: [FormsModule, TranslocoPipe, Icon],
   template: `
     @if (done()) {
-      <div class="card p-8 text-center animate-float-up">
-        <app-icon name="heart" [filled]="true" class="size-12 text-ciel" />
+      <div class="panel-inner p-8 text-center animate-float-up">
+        <app-icon name="heart" [filled]="true" class="size-12 text-or" />
         <p class="mt-4 text-2xl text-creme">{{ (revealed() ? 'form.thanksRevealed' : 'form.thanks') | transloco }}</p>
         <button type="button" class="btn btn-ghost mt-6" (click)="reset()">{{ 'form.another' | transloco }}</button>
       </div>
     } @else {
-      <form class="card space-y-5 p-5 sm:p-8" (ngSubmit)="submit()" novalidate>
-        <h2 class="title-script text-4xl sm:text-5xl">{{ 'form.title' | transloco }}</h2>
+      <form class="panel-inner relative space-y-5 p-5 sm:p-7" (ngSubmit)="submit()" novalidate>
 
         <div class="grid gap-5 sm:grid-cols-2">
           <div>
@@ -40,7 +39,7 @@ const PROFILE_KEY = 'vn-author';
 
         <div>
           <label class="label" for="body">{{ 'form.memory' | transloco }}</label>
-          <textarea id="body" name="body" class="field min-h-40 font-serif text-lg" maxlength="2000"
+          <textarea id="body" name="body" class="field min-h-40" maxlength="2000"
             [placeholder]="'form.memoryPlaceholder' | transloco" [(ngModel)]="body"></textarea>
           <p class="mt-1.5 text-right font-sans text-xs text-creme/50 tabular-nums">{{ body().length }}/2000</p>
         </div>
@@ -48,9 +47,9 @@ const PROFILE_KEY = 'vn-author';
         <div>
           <span class="label">{{ 'form.photo' | transloco }} <em class="text-creme/40">({{ 'form.optional' | transloco }})</em></span>
           @if (photoPreview(); as src) {
-            <div class="relative overflow-hidden rounded-xl">
+            <div class="relative overflow-hidden rounded-[3px]">
               <img [src]="src" alt="" class="max-h-72 w-full object-cover" />
-              <button type="button" class="absolute top-2 right-2 rounded-full bg-noir/80 px-3 py-1 font-sans text-xs" (click)="clearPhoto()">
+              <button type="button" class="absolute top-2 right-2 rounded-full bg-nuit/80 px-3 py-1 font-sans text-xs" (click)="clearPhoto()">
                 {{ 'form.remove' | transloco }}
               </button>
             </div>
@@ -69,12 +68,12 @@ const PROFILE_KEY = 'vn-author';
         </div>
 
         @if (error()) {
-          <p class="rounded-xl border border-rose/40 bg-rose/10 px-4 py-3 font-sans text-sm text-creme" role="alert">
+          <p class="rounded-[3px] border border-rose/40 bg-rose/10 px-4 py-3 font-sans text-sm text-creme" role="alert">
             {{ 'form.errors.' + error() | transloco }}
           </p>
         }
 
-        <button type="submit" class="btn btn-ciel w-full py-4 text-base" [disabled]="busy()">
+        <button type="submit" class="btn btn-or w-full py-3.5 text-base sm:w-auto sm:px-10" [disabled]="busy()">
           @if (progress() !== null) {
             {{ 'form.uploading' | transloco: { p: progress() } }}
           } @else if (busy()) {
@@ -95,15 +94,15 @@ const PROFILE_KEY = 'vn-author';
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      border-radius: 0.75rem;
-      border: 1.5px dashed rgb(135 206 235 / 0.35);
-      background: rgb(135 206 235 / 0.04);
+      border-radius: 3px;
+      border: 1.5px dashed rgb(245 196 106 / 0.45);
+      background: rgb(245 196 106 / 0.05);
       font-family: var(--font-sans);
       font-size: 0.875rem;
-      color: var(--color-ciel-clair);
+      color: var(--color-or-clair);
       transition: background 0.2s;
     }
-    .drop-zone:hover { background: rgb(135 206 235 / 0.1); }
+    .drop-zone:hover { background: rgb(245 196 106 / 0.12); }
   `,
 })
 export class ContributionForm implements OnDestroy {

@@ -2,7 +2,7 @@
   display: block;
   background:
     radial-gradient(ellipse at top, rgb(200 16 46 / 0.18), transparent 60%),
-    var(--color-noir);
+    var(--color-nuit);
   min-height: 100dvh;
 }
 
@@ -49,7 +49,7 @@
 }
 .reason .back {
   background: var(--color-creme);
-  color: var(--color-noir);
+  color: var(--color-nuit);
   font-size: 1.05rem;
   line-height: 1.35;
   text-align: center;
@@ -59,7 +59,7 @@
 .reason.flipped .back { transform: rotateY(360deg); }
 
 .coupon {
-  background: var(--color-noir-soft);
+  background: var(--color-nuit-soft);
   border: 2px dashed rgb(200 16 46 / 0.5);
 }
 .coupon::before,
@@ -71,7 +71,7 @@
   height: 1.5rem;
   margin-top: -0.75rem;
   border-radius: 9999px;
-  background: var(--color-noir);
+  background: var(--color-nuit);
 }
 .coupon::before { left: -0.8rem; }
 .coupon::after { right: -0.8rem; }

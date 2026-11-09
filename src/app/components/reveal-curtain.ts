@@ -1,26 +1,27 @@
 import { Component, output, signal } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { DecoFrame } from './deco-frame';
+import { Icon } from './icon';
 import { RoseRain } from './rose-rain';
 
-/** Animation d'ouverture du soir J : rideau, puis confettis et roses. */
+/** Écran d'ouverture du soir J : carte d'invitation, puis confettis et pétales. */
 @Component({
   selector: 'app-reveal-curtain',
-  imports: [TranslocoPipe, RoseRain],
+  imports: [TranslocoPipe, RoseRain, DecoFrame, Icon],
   template: `
     @if (state() !== 'done') {
-      <div class="fixed inset-0 z-50 overflow-hidden" [class.opening]="state() === 'opening'">
-        <div class="curtain left-0"></div>
-        <div class="curtain right-0"></div>
-        @if (state() === 'closed') {
-          <button
-            type="button"
-            class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 text-center"
-            (click)="open()"
-          >
-            <span class="font-script text-6xl text-ciel drop-shadow-lg sm:text-8xl">Victorine</span>
-            <span class="animate-pulse font-sans text-sm tracking-[0.3em] text-creme/80 uppercase">{{ 'home.tapToOpen' | transloco }}</span>
-          </button>
-        }
+      <div class="screen fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4" [class.leaving]="state() === 'opening'">
+        <div class="w-full max-w-md animate-float-up">
+          <app-deco-frame>
+            <p class="eyebrow">{{ 'home.forYou' | transloco }}</p>
+            <p class="title-script mt-4 text-5xl sm:text-6xl">{{ 'home.birthday' | transloco }}</p>
+            <h1 class="title-display mt-3 text-6xl sm:text-7xl">Victorine</h1>
+            <p class="mt-4 text-sm text-creme/80">09 · 11 · 2026</p>
+            <button type="button" class="btn btn-or mt-8" (click)="open()">
+              <app-icon name="mail" class="size-4" /> {{ 'home.tapToOpen' | transloco }}
+            </button>
+          </app-deco-frame>
+        </div>
       </div>
     }
     @if (state() !== 'closed') {
@@ -29,20 +30,15 @@ import { RoseRain } from './rose-rain';
     }
   `,
   styles: `
-    .curtain {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 50.5%;
-      background:
-        repeating-linear-gradient(90deg, rgb(0 0 0 / 0.35) 0 6px, transparent 6px 40px),
-        linear-gradient(180deg, #1a3f52, #0b0b0f);
-      transition: transform 1.8s cubic-bezier(0.7, 0, 0.3, 1);
-      box-shadow: inset 0 -40px 80px rgb(0 0 0 / 0.6);
+    .screen {
+      background: linear-gradient(180deg, #2b2147, var(--color-nuit) 70%);
+      transition: opacity 0.9s ease, transform 0.9s ease;
     }
-    .curtain.left-0 { transform-origin: left; }
-    .opening .curtain.left-0 { transform: translateX(-100%); }
-    .opening .curtain.right-0 { transform: translateX(100%); }
+    .screen.leaving {
+      opacity: 0;
+      transform: scale(1.06);
+      pointer-events: none;
+    }
   `,
 })
 export class RevealCurtain {
@@ -52,6 +48,6 @@ export class RevealCurtain {
   open() {
     this.state.set('opening');
     this.opened.emit();
-    setTimeout(() => this.state.set('done'), 1900);
+    setTimeout(() => this.state.set('done'), 950);
   }
 }

@@ -27,7 +27,7 @@ export function provideI18n() {
       defaultLang: 'fr',
       fallbackLang: 'fr',
       reRenderOnLangChange: true,
-      missingHandler: { useFallbackTranslation: true },
+      missingHandler: { useFallbackTranslation: true, allowEmpty: true },
       prodMode: !isDevMode(),
     },
     loader: TranslocoHttpLoader,

@@ -2,22 +2,22 @@
   <p class="py-32 text-center font-sans text-creme/60">{{ 'wall.loading' | transloco }}</p>
 } @else if (locked()) {
   <div class="mx-auto max-w-lg px-4 py-32 text-center">
-    <app-icon name="secret" class="size-12 text-ciel" />
+    <app-icon name="secret" class="size-12 text-or" />
     <p class="mt-4 text-2xl">{{ 'wall.locked' | transloco }}</p>
     <a routerLink="/" class="btn btn-ghost mt-8">{{ 'wall.back' | transloco }}</a>
   </div>
 } @else {
   <section class="mx-auto max-w-6xl px-4 pt-6 pb-16">
     <header class="text-center">
-      <h1 class="title-script text-6xl sm:text-7xl">{{ 'wall.title' | transloco }}</h1>
-      <p class="mt-2 text-xl text-creme/70">{{ 'wall.subtitle' | transloco: { count: messages().length } }}</p>
+      <h1 class="section-title mx-auto max-w-2xl text-5xl sm:text-6xl">{{ 'wall.title' | transloco }}</h1>
+      <p class="mt-3 text-creme/80">{{ 'wall.subtitle' | transloco: { count: messages().length } }}</p>
     </header>
 
     <!-- Barre d'outils -->
-    <div class="no-print sticky top-16 z-20 -mx-4 mt-8 flex flex-wrap items-center justify-center gap-2 bg-noir/85 px-4 py-3 font-sans text-sm backdrop-blur">
+    <div class="no-print sticky top-16 z-20 -mx-4 mt-8 flex flex-wrap items-center justify-center gap-2 bg-nuit/90 px-4 py-3 font-sans text-sm backdrop-blur">
       @for (t of ['all', 'text', 'photo']; track t) {
-        <button type="button" class="rounded-full border px-4 py-1.5 transition"
-          [class]="type() === t ? 'border-ciel bg-ciel text-noir' : 'border-white/10 text-creme/70 hover:border-ciel/50'"
+        <button type="button" class="rounded-[3px] border px-4 py-1.5 transition"
+          [class]="type() === t ? 'border-or bg-or text-nuit' : 'border-or/30 text-creme/80 hover:border-or'"
           (click)="type.set($any(t))">
           {{ 'wall.' + t | transloco }}
         </button>
@@ -44,9 +44,9 @@
 
   <!-- =============== DIAPORAMA (pour projeter pendant la soirée) =============== -->
   @if (slideshow() && current()) {
-    <div class="fixed inset-0 z-50 flex flex-col bg-noir">
+    <div class="fixed inset-0 z-50 flex flex-col bg-nuit">
       <div class="pointer-events-none absolute inset-0 overflow-hidden">
-        <div class="absolute -top-40 left-1/2 h-[50rem] w-[50rem] -translate-x-1/2 rounded-full bg-ciel/10 blur-3xl"></div>
+        <div class="absolute -top-40 left-1/2 h-[50rem] w-[50rem] -translate-x-1/2 rounded-full bg-or/10 blur-3xl"></div>
       </div>
 
       @for (m of [current()!]; track m.id) {
@@ -62,7 +62,7 @@
           @if (m.body) {
             <p class="text-2xl leading-relaxed whitespace-pre-line sm:text-4xl" [attr.lang]="m.lang">“{{ m.body }}”</p>
           }
-          <p class="mt-6 font-script text-4xl text-ciel sm:text-5xl">{{ m.author_name }}</p>
+          <p class="mt-6 font-script text-4xl text-or sm:text-5xl">{{ m.author_name }}</p>
         </div>
       </div>
       }
@@ -74,7 +74,7 @@
         </button>
         <button type="button" class="btn btn-ghost px-4 py-2" (click)="next()">{{ 'wall.next' | transloco }} <app-icon name="chevron-right" class="size-4" /></button>
         <span class="mx-2 tabular-nums text-creme/50">{{ (slide() % messages().length) + 1 }} / {{ messages().length }}</span>
-        <button type="button" class="btn btn-ciel px-4 py-2" (click)="exitSlideshow()">{{ 'wall.exit' | transloco }}</button>
+        <button type="button" class="btn btn-or px-4 py-2" (click)="exitSlideshow()">{{ 'wall.exit' | transloco }}</button>
       </div>
     </div>
   }

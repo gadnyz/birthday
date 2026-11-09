@@ -10,10 +10,10 @@ import { LangSwitch } from './components/lang-switch';
   template: `
     <header
       class="no-print sticky top-0 z-30 flex items-center justify-between px-4 py-3 backdrop-blur-md sm:px-8"
-      [class]="isLove() ? 'bg-noir/60' : 'bg-noir/70'"
+      [class]="isLove() ? 'bg-nuit/60' : 'bg-nuit/70'"
     >
-      <a routerLink="/" class="font-script text-2xl" [class]="isLove() ? 'text-rose' : 'text-ciel'">Victorine</a>
-      <app-lang-switch [accent]="isLove() ? 'rose' : 'ciel'" />
+      <a routerLink="/" class="font-script text-2xl" [class]="isLove() ? 'text-rose' : 'text-or'">Victorine</a>
+      <app-lang-switch [accent]="isLove() ? 'rose' : 'or'" />
     </header>
     <main>
       <router-outlet />

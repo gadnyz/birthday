@@ -13,10 +13,11 @@ interface Drop {
   color: string;
 }
 
-const CONFETTI = ['#87CEEB', '#B9E4F5', '#4FA9D1', '#F7F3EE', '#FFD700', '#C8102E'];
+// Or du thème + pastels des ballons (rose, vert d'eau, bleu) + crème
+const CONFETTI = ['#F5C46A', '#FBDC9C', '#F4B8C8', '#B9DCC4', '#B8D8EE', '#FBF7F0'];
 
 /**
- * Pluie décorative plein écran (roses, cœurs bleu ciel, confettis, pétales).
+ * Pluie décorative plein écran (roses, cœurs, confettis, pétales).
  * Purement CSS : aucune boucle JS, et `pointer-events: none` pour ne rien bloquer.
  */
 @Component({
@@ -97,7 +98,7 @@ export class RoseRain {
       sway: (Math.random() - 0.5) * 160,
       color:
         kind === 'hearts'
-          ? ['#87CEEB', '#B9E4F5', '#4FA9D1'][id % 3]!
+          ? ['#F5C46A', '#F4B8C8', '#B8D8EE'][id % 3]!
           : kind === 'petals' || kind === 'roses'
             ? ['#C8102E', '#A50D26', '#E0314B'][id % 3]!
             : CONFETTI[id % CONFETTI.length]!,

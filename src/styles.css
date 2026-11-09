@@ -1,18 +1,26 @@
 @import 'tailwindcss';
 
-/* Identité visuelle (équivalent Tailwind v4 du tailwind.config.js décrit dans le README) */
+/*
+ * Identité visuelle : « invitation de soirée »
+ * Violet nuit profond, accents or, titres en script, nom en capitales condensées,
+ * panneaux à texture topographique et cadres Art déco.
+ * Le rouge des roses (--color-rose) reste réservé à /mon-amour.
+ */
 @theme {
-  --color-noir: #0b0b0f;
-  --color-noir-soft: #16161d;
-  --color-ciel: #87ceeb;
-  --color-ciel-clair: #b9e4f5;
-  --color-ciel-fonce: #4fa9d1;
+  --color-nuit: #1d0b44;
+  --color-nuit-soft: #2a1758;
+  --color-nuit-clair: #3a2670;
+  --color-or: #f5c46a;
+  --color-or-clair: #fbdc9c;
+  --color-or-fonce: #d9a441;
+  --color-lavande: #ece8f4;
   --color-rose: #c8102e;
-  --color-creme: #f7f3ee;
+  --color-creme: #fbf7f0;
 
   --font-script: 'Great Vibes', cursive;
+  --font-display: 'Bebas Neue', sans-serif;
   --font-serif: 'Cormorant Garamond', serif;
-  --font-sans: 'Inter', sans-serif;
+  --font-sans: 'Delius', 'Inter', sans-serif;
 }
 
 @layer base {
@@ -21,7 +29,10 @@
     -webkit-tap-highlight-color: transparent;
   }
   body {
-    @apply bg-noir text-creme font-serif antialiased min-h-dvh;
+    @apply min-h-dvh font-sans text-creme antialiased;
+    background:
+      linear-gradient(180deg, #2b2147 0, var(--color-nuit) 32rem) no-repeat,
+      var(--color-nuit);
   }
   input,
   textarea,
@@ -32,34 +43,73 @@
 }
 
 @layer components {
+  /* ---------- Boutons : rectangles or, coins à peine arrondis ---------- */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-sans text-sm font-semibold tracking-wide transition
+    @apply inline-flex items-center justify-center gap-2 rounded-[3px] px-6 py-3 font-sans text-sm tracking-wide transition
       disabled:cursor-not-allowed disabled:opacity-50;
   }
-  .btn-ciel {
-    @apply bg-ciel text-noir hover:bg-ciel-clair focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ciel;
+  .btn-or {
+    @apply bg-or text-nuit shadow-[0_6px_20px_-8px_rgb(245_196_106/0.7)] hover:bg-or-clair
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-or;
   }
   .btn-ghost {
-    @apply border border-ciel/40 text-ciel hover:border-ciel hover:bg-ciel/10;
+    @apply border border-or/60 text-or hover:bg-or/10;
   }
   .btn-rose {
     @apply bg-rose text-creme hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose;
   }
+
+  /* ---------- Champs : clairs sur fond violet ---------- */
   .field {
-    @apply w-full rounded-xl border border-white/10 bg-noir-soft px-4 py-3 font-sans text-base text-creme placeholder:text-creme/35
-      focus:border-ciel focus:outline-none focus:ring-2 focus:ring-ciel/30;
+    @apply w-full rounded-[3px] border border-transparent bg-lavande px-4 py-3 font-sans text-base text-nuit placeholder:text-nuit/40
+      focus:border-or focus:outline-none focus:ring-2 focus:ring-or/50;
   }
   .label {
-    @apply mb-1.5 block font-sans text-sm font-medium text-ciel-clair;
+    @apply mb-1.5 block font-sans text-sm text-creme;
+  }
+
+  /* ---------- Panneaux à texture topographique ---------- */
+  .panel {
+    @apply relative shadow-[0_24px_60px_-20px_rgb(0_0_0/0.6)];
+    background:
+      url('/img/topo.svg') center / 520px auto,
+      var(--color-nuit-soft);
+  }
+  .panel-inner {
+    @apply rounded-[3px] bg-nuit/70;
   }
   .card {
-    @apply rounded-2xl border border-white/8 bg-noir-soft/80 backdrop-blur;
+    @apply relative rounded-[4px] shadow-[0_24px_60px_-20px_rgb(0_0_0/0.6)];
+    background:
+      url('/img/topo.svg') center / 520px auto,
+      var(--color-nuit-soft);
   }
+
+  /* ---------- Titres ---------- */
   .title-script {
-    @apply font-script text-ciel leading-tight;
+    @apply font-script font-normal leading-tight text-or;
+  }
+  .title-display {
+    @apply font-display tracking-wide text-creme uppercase;
+  }
+  /* Titre de section encadré de deux fines lignes or */
+  .section-title {
+    @apply flex items-center gap-4 font-script text-4xl leading-none text-or sm:text-5xl;
+  }
+  .section-title::before,
+  .section-title::after {
+    content: '';
+    @apply h-px flex-1 bg-or/50;
+  }
+  .eyebrow {
+    @apply font-sans text-xs tracking-[0.3em] text-creme/80 uppercase;
+  }
+
+  /* Photo en forme de pilule (stade) */
+  .pill-photo {
+    @apply overflow-hidden rounded-[999px];
   }
 }
-
 
 @keyframes float-up {
   from { transform: translateY(12px); opacity: 0; }

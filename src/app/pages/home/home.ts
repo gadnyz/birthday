@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ContributionForm } from '../../components/contribution-form';
 import { Countdown } from '../../components/countdown';
+import { DecoFrame } from '../../components/deco-frame';
 import { Icon } from '../../components/icon';
 import { Lightbox, LightboxItem } from '../../components/lightbox';
 import { RevealCurtain } from '../../components/reveal-curtain';
@@ -14,7 +15,7 @@ const CURTAIN_KEY = 'vn-curtain-seen';
 
 @Component({
   selector: 'app-home',
-  imports: [TranslocoPipe, RouterLink, Countdown, ContributionForm, RevealCurtain, RoseRain, Lightbox, Icon],
+  imports: [TranslocoPipe, RouterLink, Countdown, ContributionForm, RevealCurtain, RoseRain, Lightbox, Icon, DecoFrame],
   templateUrl: './home.html',
 })
 export class Home implements OnInit {
@@ -63,7 +64,13 @@ export class Home implements OnInit {
     }
   }
 
-  /** Easter egg : taper « Victorine » déclenche une pluie de cœurs bleu ciel. */
+  /** Défilement doux vers une section (sans changer l'URL). */
+  scrollTo(e: Event, id: string) {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /** Easter egg : taper « Victorine » déclenche une pluie de cœurs. */
   @HostListener('document:keydown', ['$event'])
   onKey(e: KeyboardEvent) {
     if (e.key.length !== 1) return;

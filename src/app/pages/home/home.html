@@ -4,37 +4,74 @@
 
 @if (!reveal.revealed()) {
   <!-- =============== MODE SECRET : avant le 09/11 à 20h =============== -->
-  <section class="relative overflow-hidden">
-    <div class="pointer-events-none absolute inset-0 -z-10">
-      <div class="absolute -top-32 left-1/2 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-ciel/10 blur-3xl"></div>
-    </div>
 
-    <div class="mx-auto max-w-3xl px-4 pt-6 pb-10 text-center sm:pt-12">
-      <p class="inline-flex items-center gap-2 rounded-full border border-ciel/30 bg-ciel/10 px-4 py-2 font-sans text-sm text-ciel-clair animate-float-up">
-        <app-icon name="secret" class="size-4" /> {{ 'home.secret' | transloco }}
+  <!-- 1. Carte d'invitation -->
+  <section class="mx-auto max-w-md px-4 pt-8 pb-16 sm:pt-14">
+    <app-deco-frame>
+      <p class="eyebrow">{{ 'home.invited' | transloco }}</p>
+      <p class="title-script mt-4 text-5xl sm:text-6xl">{{ 'home.birthday' | transloco }}</p>
+      <h1 class="title-display mt-3 text-6xl sm:text-7xl">Victorine</h1>
+      <p class="mt-4 inline-flex items-center gap-2 text-sm text-creme/85">
+        <app-icon name="secret" class="size-4 text-or" /> {{ 'home.secret' | transloco }}
       </p>
-
-      <div class="relative mx-auto mt-8 h-40 w-40 sm:h-48 sm:w-48">
-        <img src="/img/accueil/principal.jpeg" alt="Victorine"
-          class="h-full w-full rounded-full object-cover ring-4 ring-ciel/40 ring-offset-4 ring-offset-noir" />
-        <span class="absolute -right-1 -bottom-1 flex size-12 items-center justify-center rounded-full bg-ciel text-noir shadow-lg"><app-icon name="cake" class="size-6" /></span>
+      <div>
+        <a href="#mot" class="btn btn-or mt-7 py-2.5" (click)="scrollTo($event, 'mot')">
+          <app-icon name="pen" class="size-4" /> {{ 'home.leaveWord' | transloco }}
+        </a>
       </div>
+    </app-deco-frame>
+  </section>
 
-      <h1 class="title-script mt-6 text-5xl sm:text-7xl">{{ 'home.title' | transloco }}</h1>
-      <p class="mx-auto mt-4 max-w-xl text-xl text-creme/80">{{ 'home.intro' | transloco }}</p>
-
-      <p class="mt-10 mb-3 font-sans text-xs tracking-[0.3em] text-creme/50 uppercase">{{ 'home.revealIn' | transloco }}</p>
-      <app-countdown [target]="reveal.revealAt()" />
-
-      @if (count(); as n) {
-        <p class="mt-6 inline-flex items-center gap-2 font-sans text-sm text-ciel-clair"><app-icon name="mail" class="size-4" /> {{ 'home.count' | transloco: { count: n } }}</p>
+  <!-- 2. En l'honneur de… -->
+  <section class="mx-auto max-w-md px-4 py-10 text-center">
+    <h2 class="title-script text-5xl sm:text-6xl">{{ 'home.party' | transloco }}</h2>
+    <div class="mt-6 grid grid-cols-2 gap-2">
+      @for (img of gallery.slice(1, 3); track img.url; let i = $index) {
+        <button type="button" class="overflow-hidden" (click)="lightboxIndex.set(i + 1)">
+          <img [src]="img.url" alt="" loading="lazy" class="aspect-[3/2] w-full object-cover transition duration-500 hover:scale-105" />
+        </button>
       }
+    </div>
+    <p class="mt-4 text-sm text-creme/85">{{ 'home.honoring' | transloco }}</p>
+    <button type="button" class="pill-photo mx-auto mt-4 block w-64 sm:w-72" (click)="lightboxIndex.set(0)">
+      <img src="/img/accueil/principal.jpeg" alt="Victorine" class="aspect-[3/2] w-full object-cover object-[50%_70%]" />
+    </button>
+    <p class="title-script mt-6 text-4xl">Victorine Nabino</p>
+    <p class="mt-2 text-sm text-creme/85">{{ 'home.honorLine' | transloco }}</p>
+  </section>
+
+  <!-- 3. Révélation -->
+  <section class="mx-auto max-w-xl px-4 py-10">
+    <div class="panel px-5 py-10 sm:px-10">
+      <h2 class="section-title">{{ 'home.revealTitle' | transloco }}</h2>
+      <div class="mt-8">
+        <app-countdown [target]="reveal.revealAt()" />
+      </div>
+      <p class="mt-6 text-center text-creme/90">“{{ 'home.quote' | transloco }}”</p>
+
+      <div class="mt-8 grid grid-cols-3 divide-x divide-creme/30 text-center">
+        <div class="px-2">
+          <p class="font-display text-4xl leading-none">9<sup class="text-base">{{ 'home.dayOrdinal' | transloco }}</sup></p>
+          <p class="mt-1 text-xs text-creme/80">{{ 'home.weekday' | transloco }}</p>
+        </div>
+        <div class="px-2">
+          <p class="font-display text-4xl leading-none tabular-nums">{{ count() ?? '…' }}</p>
+          <p class="mt-1 text-xs text-creme/80">{{ 'home.messagesLeft' | transloco }}</p>
+        </div>
+        <div class="px-2">
+          <p class="font-display text-4xl leading-none">20:00</p>
+          <p class="mt-1 text-xs text-creme/80">{{ 'home.evening' | transloco }}</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="mx-auto max-w-3xl px-4 pb-16">
-    <app-contribution-form (submitted)="refreshCount()" />
-    <p class="mt-6 flex items-center justify-center gap-2 font-sans text-xs text-creme/40"><app-icon name="secret" class="size-4" /> {{ 'home.dontTell' | transloco }}</p>
+  <!-- 4. Laisse un mot -->
+  <section id="mot" class="mx-auto max-w-xl scroll-mt-20 px-4 py-10">
+    <div class="panel px-4 py-10 sm:px-8">
+      <h2 class="section-title mb-8">{{ 'home.leaveTitle' | transloco }}</h2>
+      <app-contribution-form (submitted)="refreshCount()" />
+    </div>
   </section>
 } @else {
   <!-- =============== MODE RÉVÉLATION : à partir du 09/11 à 20h =============== -->
@@ -42,39 +79,67 @@
     <app-reveal-curtain (opened)="curtainOpened()" />
   }
 
-  <section class="relative">
-    <div class="relative h-[70vh] min-h-[28rem] overflow-hidden">
-      <img src="/img/accueil/principal.jpeg" alt="Victorine" class="absolute inset-0 h-full w-full object-cover object-top" />
-      <div class="absolute inset-0 bg-gradient-to-b from-noir/30 via-noir/40 to-noir"></div>
-      <div class="absolute inset-x-0 bottom-0 px-4 pb-10 text-center">
-        <p class="font-sans text-sm tracking-[0.4em] text-ciel-clair uppercase">09 · 11 · 2026</p>
-        <h1 class="title-script mt-2 text-6xl drop-shadow-lg sm:text-8xl">{{ 'home.revealedTitle' | transloco }}</h1>
-        <p class="mx-auto mt-4 max-w-xl text-xl text-creme/90">{{ 'home.revealedSubtitle' | transloco }}</p>
-        <a routerLink="/souvenirs" class="btn btn-ciel mt-8 px-8 py-4 text-base"><app-icon name="heart" [filled]="true" class="size-5" /> {{ 'home.openWall' | transloco }}</a>
-      </div>
-    </div>
+  <!-- 1. Carte -->
+  <section class="mx-auto max-w-md px-4 pt-8 pb-12 sm:pt-14">
+    <app-deco-frame>
+      <p class="eyebrow">{{ 'home.forYou' | transloco }}</p>
+      <p class="title-script mt-4 text-5xl sm:text-6xl">{{ 'home.birthday' | transloco }}</p>
+      <h1 class="title-display mt-3 text-6xl sm:text-7xl">Victorine</h1>
+      <p class="mx-auto mt-4 max-w-xs text-sm text-creme/85">{{ 'home.revealedSubtitle' | transloco }}</p>
+      <a routerLink="/souvenirs" class="btn btn-or mt-7 py-2.5">
+        <app-icon name="heart" [filled]="true" class="size-4" /> {{ 'home.openWall' | transloco }}
+      </a>
+    </app-deco-frame>
   </section>
 
-  <section class="mx-auto max-w-5xl px-4 py-14">
-    <h2 class="title-script mb-6 text-center text-5xl">{{ 'home.gallery' | transloco }}</h2>
-    <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+  <!-- 2. En l'honneur de… -->
+  <section class="mx-auto max-w-md px-4 py-10 text-center">
+    <p class="text-sm text-creme/85">{{ 'home.honoring' | transloco }}</p>
+    <button type="button" class="pill-photo mx-auto mt-4 block w-64 sm:w-72" (click)="lightboxIndex.set(0)">
+      <img src="/img/accueil/principal.jpeg" alt="Victorine" class="aspect-[3/2] w-full object-cover object-[50%_70%]" />
+    </button>
+    <p class="title-script mt-6 text-4xl">Victorine Nabino</p>
+  </section>
+
+  <!-- 3. Galerie -->
+  <section class="mx-auto max-w-xl px-4 py-10">
+    <h2 class="section-title mb-6">{{ 'home.gallery' | transloco }}</h2>
+    <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
       @for (img of gallery.slice(1); track img.url; let i = $index) {
-        <button type="button" class="group overflow-hidden rounded-2xl" (click)="lightboxIndex.set(i + 1)">
-          <img [src]="img.url" alt="" loading="lazy" class="aspect-[3/4] w-full object-cover transition duration-500 group-hover:scale-105" />
+        <button type="button" class="overflow-hidden" (click)="lightboxIndex.set(i + 1)">
+          <img [src]="img.url" alt="" loading="lazy" class="aspect-square w-full object-cover transition duration-500 hover:scale-105" />
         </button>
       }
     </div>
   </section>
 
-  <section class="mx-auto max-w-3xl px-4 pb-16 text-center">
+  <!-- 4. Ajouter un mot -->
+  <section class="mx-auto max-w-xl px-4 py-10">
     @if (!showForm()) {
-      <button type="button" class="btn btn-ghost" (click)="showForm.set(true)"><app-icon name="pen" class="size-4" /> {{ 'home.addMore' | transloco }}</button>
+      <div class="text-center">
+        <button type="button" class="btn btn-ghost" (click)="showForm.set(true)">
+          <app-icon name="pen" class="size-4" /> {{ 'home.addMore' | transloco }}
+        </button>
+      </div>
     } @else {
-      <div class="text-left">
+      <div class="panel px-4 py-10 sm:px-8">
+        <h2 class="section-title mb-8">{{ 'home.leaveTitle' | transloco }}</h2>
         <app-contribution-form [revealed]="true" />
       </div>
     }
   </section>
-
-  <app-lightbox [items]="gallery" [(index)]="lightboxIndex" (close)="lightboxIndex.set(null)" />
 }
+
+<!-- Signature -->
+<footer class="mx-auto max-w-md px-4 pt-6 pb-14 text-center text-sm text-creme/85">
+  @if (!reveal.revealed()) {
+    <p class="inline-flex items-center gap-2 text-or-clair">
+      <app-icon name="secret" class="size-4" /> {{ 'home.dontTell' | transloco }}
+    </p>
+  }
+  <p class="mt-6">{{ 'home.regards' | transloco }}</p>
+  <p class="title-script mt-3 text-4xl">{{ 'home.signature' | transloco }}</p>
+  <p class="mt-4 text-xs text-creme/50">© 2026 · Victorine Nabino</p>
+</footer>
+
+<app-lightbox [items]="gallery" [(index)]="lightboxIndex" (close)="lightboxIndex.set(null)" />
