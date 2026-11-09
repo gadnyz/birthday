@@ -6,12 +6,13 @@
   @case ('locked') {
     <!-- =============== Écran du code secret =============== -->
     <app-rose-rain kind="hearts" [palette]="pinkHearts" [count]="14" [loop]="true" [spread]="12" />
-    <section class="flex min-h-[80vh] items-center justify-center px-4 py-10">
+    <section class="flex min-h-[80vh] flex-col items-center justify-center px-4 py-10">
+      <h1 class="title-script mb-8 text-center text-5xl leading-tight sm:text-6xl">{{ 'love.birthday' | transloco }}</h1>
       <div class="w-full max-w-sm">
         <app-deco-frame>
           <form (ngSubmit)="unlock()">
             <app-icon name="rose" [stroke]="1.25" class="size-14 text-rose" />
-            <h1 class="title-script mt-3 text-5xl">{{ 'love.lockTitle' | transloco }}</h1>
+            <h2 class="title-script mt-3 text-4xl">{{ 'love.lockTitle' | transloco }}</h2>
             <p class="mt-3 text-sm text-creme/80">{{ 'love.lockText' | transloco }}</p>
             <label class="sr-only" for="code">{{ 'love.code' | transloco }}</label>
             <input id="code" name="code" type="password" autocomplete="off" autocapitalize="off"
@@ -54,9 +55,10 @@
           <app-icon name="rose" [stroke]="1.5" class="size-6" />
           <app-icon name="heart" [filled]="true" class="size-4" />
         </p>
-        <h1 class="title-script mt-3 text-5xl sm:text-6xl">{{ 'love.envelope' | transloco }}</h1>
+        <h1 class="title-script mt-3 text-5xl leading-tight sm:text-7xl">{{ 'love.birthday' | transloco }}</h1>
+        <h2 class="section-title mt-10">{{ 'love.envelope' | transloco }}</h2>
         <div class="mt-10">
-          <app-envelope [title]="c.letter.title" [hint]="'love.envelopeHint' | transloco" (opens)="letterOpen.set(true)" />
+          <app-envelope [title]="c.letter.title" [hint]="'love.envelopeHint' | transloco" (opens)="letterOpen.set(true); playSong()" />
         </div>
 
         @if (letterOpen()) {
@@ -71,21 +73,20 @@
             </p>
           </article>
 
-          <!-- Notre chanson : KS Bloom - La Mour -->
-          <div class="mt-12">
-            <h2 class="section-title"><span class="inline-flex items-center gap-3"><app-icon name="music" [stroke]="1.5" class="size-7 text-rose" /> {{ 'love.song' | transloco }}</span></h2>
-            <p class="mt-2 text-sm text-creme/70">KS Bloom — « La Mour »</p>
-            @if (songUrl(); as url) {
-              <div class="mt-4 aspect-video overflow-hidden rounded-[4px] border border-ciel/30">
-                <iframe class="h-full w-full" [src]="url" title="KS Bloom - La Mour" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-              </div>
-            } @else {
-              <a class="btn btn-ciel mt-4" target="_blank" rel="noopener"
-                href="https://www.youtube.com/results?search_query=KS+Bloom+La+Mour"><app-icon name="play" [filled]="true" class="size-4" /> {{ 'love.searchSong' | transloco }}</a>
-            }
-          </div>
         }
       </section>
+
+      <!-- Musique : KS Bloom - « La Mour », en boucle à partir de 30 s -->
+      <button type="button" class="fixed right-4 bottom-4 z-50 flex items-center gap-2 rounded-full border border-ciel/50 bg-noir/85 py-2 pr-4 pl-3 text-sm text-ciel shadow-lg backdrop-blur"
+        (click)="toggleSong()" [attr.aria-label]="(playing() ? 'wall.pause' : 'wall.play') | transloco">
+        <span class="flex size-8 items-center justify-center rounded-full bg-rose text-noir">
+          <app-icon [name]="playing() ? 'pause' : 'play'" [filled]="true" class="size-4" />
+        </span>
+        <span class="text-left leading-tight"><span class="block text-xs text-creme/60">KS Bloom</span>La Mour</span>
+        @if (playing()) {
+          <app-icon name="music" class="size-4 animate-pulse text-rose" />
+        }
+      </button>
 
       <!-- 2. Nous deux : vidéo + galerie -->
       @if (c.video.url || media().length) {
@@ -123,7 +124,8 @@
 
       <!-- 4. Bons cadeaux -->
       <section class="mx-auto max-w-5xl px-4 py-12">
-        <h2 class="section-title mb-8">{{ 'love.coupons' | transloco }}</h2>
+        <h2 class="section-title text-3xl leading-tight sm:text-5xl">{{ 'love.coupons' | transloco }}</h2>
+        <p class="mx-auto mt-4 mb-8 max-w-xl text-center text-creme/85">{{ 'love.couponsIntro' | transloco }}</p>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           @for (k of c.coupons; track $index; let i = $index) {
             <div class="coupon panel relative rounded-[4px] p-6" [class.opacity-50]="used().has(i)">

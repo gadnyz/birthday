@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { Countdown } from '../../components/countdown';
@@ -13,7 +12,6 @@ import { RoseRain } from '../../components/rose-rain';
 
 interface LoveContent {
   from: string;
-  youtubeId: string;
   letter: { title: string; paragraphs: string[] };
   reasons: string[];
   photos: { path: string; caption: string; url: string | null }[];
@@ -33,6 +31,10 @@ interface Petal {
 
 const COUPONS_KEY = 'vn-coupons';
 
+/** Chanson KS Bloom - « La Mour », lue en boucle à partir de la 30e seconde. */
+const SONG_URL = '/KS_BLOOM_-_La_Mour_Clip_officiel.mp3';
+const SONG_START = 30;
+
 @Component({
   selector: 'app-mon-amour',
   imports: [FormsModule, TranslocoPipe, RoseRain, Envelope, Countdown, Lightbox, Icon, DecoFrame],
@@ -43,9 +45,8 @@ const COUPONS_KEY = 'vn-coupons';
     '(pointerdown)': 'trail($event, true)',
   },
 })
-export class MonAmour implements OnInit {
+export class MonAmour implements OnInit, OnDestroy {
   private readonly http = inject(HttpClient);
-  private readonly sanitizer = inject(DomSanitizer);
 
   protected readonly state = signal<'checking' | 'locked' | 'open'>('checking');
   protected readonly code = signal('');
@@ -66,20 +67,21 @@ export class MonAmour implements OnInit {
     return c.photos.filter((p) => p.url).map((p) => ({ type: 'photo', url: p.url!, caption: p.caption }));
   });
 
-  protected readonly songUrl = computed<SafeResourceUrl | null>(() => {
-    const id = this.content()?.youtubeId;
-    if (!id || !this.letterOpen()) return null;
-    // Le clic sur l'enveloppe autorise la lecture automatique avec le son.
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0&modestbranding=1`,
-    );
-  });
 
   protected readonly nextDateMs = computed(() => {
     const at = this.content()?.nextDate.at;
     const t = at ? new Date(at).getTime() : NaN;
     return Number.isFinite(t) && t > Date.now() ? t : null;
   });
+
+  // ---------- Musique ----------
+  protected readonly playing = signal(false);
+  private song?: HTMLAudioElement;
+  private gestureStart = 0;
+  private readonly unlockAudio = () => {
+    this.gestureStart = performance.now();
+    this.playSong();
+  };
 
   private petalId = 0;
   private lastPetal = 0;
@@ -118,6 +120,50 @@ export class MonAmour implements OnInit {
     const c = await firstValueFrom(this.http.get<LoveContent>('/api/mon-amour/content'));
     this.content.set(c);
     this.state.set('open');
+    this.playSong();
+  }
+
+  /**
+   * Lance la chanson à 30 s. Si le navigateur bloque la lecture automatique,
+   * elle démarre au premier toucher ou clic sur la page.
+   */
+  playSong() {
+    if (!this.song) {
+      this.song = new Audio(SONG_URL);
+      this.song.preload = 'auto';
+      // Fin du morceau : on reprend à la 30e seconde, tant que la page reste ouverte.
+      this.song.addEventListener('ended', () => {
+        this.song!.currentTime = SONG_START;
+        void this.song!.play();
+      });
+      this.song.addEventListener('play', () => this.playing.set(true));
+      this.song.addEventListener('pause', () => this.playing.set(false));
+      this.song.currentTime = SONG_START;
+    }
+    this.song
+      .play()
+      .then(() => this.removeUnlock())
+      .catch(() => {
+        document.addEventListener('pointerdown', this.unlockAudio, { once: true });
+        document.addEventListener('keydown', this.unlockAudio, { once: true });
+      });
+  }
+
+  toggleSong() {
+    // Le toucher qui vient de débloquer le son ne doit pas le remettre en pause.
+    if (performance.now() - this.gestureStart < 600) return;
+    if (this.song && !this.song.paused) this.song.pause();
+    else this.playSong();
+  }
+
+  private removeUnlock() {
+    document.removeEventListener('pointerdown', this.unlockAudio);
+    document.removeEventListener('keydown', this.unlockAudio);
+  }
+
+  ngOnDestroy() {
+    this.removeUnlock();
+    this.song?.pause();
   }
 
   toggleReason(i: number) {
