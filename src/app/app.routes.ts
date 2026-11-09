@@ -7,7 +7,7 @@ export const routes: Routes = [
   {
     path: 'mon-amour',
     canActivate: [monAmourGuard],
-    title: 'Victorine',
+    title: 'Heureux anniversaire, chérie !!!',
     loadComponent: () => import('./pages/mon-amour/mon-amour').then((m) => m.MonAmour),
   },
   { path: '**', redirectTo: 'mon-amour' },
