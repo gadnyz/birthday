@@ -13,7 +13,7 @@ import { Icon } from './icon';
       <div class="envelope relative mx-auto aspect-[4/3] w-full">
         <div class="back absolute inset-0 rounded-lg"></div>
         <div class="letter absolute inset-x-4 top-4 bottom-2 rounded-md bg-creme p-4 text-noir shadow-inner">
-          <p class="font-script text-3xl text-rose">{{ title() }}</p>
+          <p class="font-script text-3xl text-ciel-fonce">{{ title() }}</p>
         </div>
         <div class="front absolute inset-0 rounded-lg"></div>
         <div class="flap absolute inset-x-0 top-0 h-1/2"></div>
@@ -29,16 +29,18 @@ import { Icon } from './icon';
     </div>
   `,
   styles: `
-    .envelope { perspective: 900px; }
-    .back { background: #7a0a1c; }
+    .envelope { perspective: 900px; transition: margin-top 1s ease 0.6s; }
+    /* Laisse la place à la lettre qui sort, pour ne pas recouvrir le titre */
+    .opened .envelope { margin-top: 42%; }
+    .back { background: #2f7fae; }
     .front {
       background:
-        linear-gradient(to top right, #a50d26 50%, transparent 50%) left / 50% 100% no-repeat,
-        linear-gradient(to top left, #a50d26 50%, transparent 50%) right / 50% 100% no-repeat;
+        linear-gradient(to top right, #4fa9d1 50%, transparent 50%) left / 50% 100% no-repeat,
+        linear-gradient(to top left, #4fa9d1 50%, transparent 50%) right / 50% 100% no-repeat;
       z-index: 2;
     }
     .flap {
-      background: #c8102e;
+      background: #87ceeb;
       clip-path: polygon(0 0, 100% 0, 50% 100%);
       transform-origin: top;
       transition: transform 0.8s ease, z-index 0s 0.4s;
@@ -50,7 +52,7 @@ import { Icon } from './icon';
     }
     .seal {
       z-index: 4;
-      background: radial-gradient(circle at 35% 35%, #e0314b, #8c0b20);
+      background: radial-gradient(circle at 35% 35%, #f9b8d3, #d9467f);
       color: #f7f3ee;
       transition: opacity 0.4s, transform 0.4s;
       animation: pulse 2s ease-in-out infinite;
@@ -59,8 +61,8 @@ import { Icon } from './icon';
     .opened .letter { transform: translateY(-55%); }
     .opened .seal { opacity: 0; transform: translate(-50%, -50%) scale(1.6); pointer-events: none; }
     @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgb(200 16 46 / 0.6); }
-      50% { box-shadow: 0 0 0 14px rgb(200 16 46 / 0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgb(244 154 193 / 0.7); }
+      50% { box-shadow: 0 0 0 14px rgb(244 154 193 / 0); }
     }
   `,
 })

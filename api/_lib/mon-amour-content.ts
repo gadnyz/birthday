@@ -48,13 +48,6 @@ export const monAmourContent = {
     'Parce que tu as dit oui.',
   ],
 
-  /** Frise de votre histoire. `photo` est un chemin facultatif dans le bucket « mon-amour ». */
-  timeline: [
-    { date: '[Date]', title: 'Notre rencontre', text: '[À personnaliser] Où, comment, ce que tu as pensé ce jour-là.', photo: 'nous-deux-1.jpeg' as string | null },
-    { date: '[Date]', title: 'Notre premier rendez-vous', text: '[À personnaliser]', photo: 'nous-deux-2.jpeg' as string | null },
-    { date: '20/09/2025', title: 'Un jour à nous', text: '[À personnaliser]', photo: 'photo-1.jpg' as string | null },
-    { date: '[Date]', title: 'Nos fiançailles', text: '[À personnaliser] Le jour où tu as dit oui.', photo: 'nous-deux-3.jpeg' as string | null },
-  ],
 
   /** Galerie privée. */
   photos: [

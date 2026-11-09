@@ -5,6 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { Countdown } from '../../components/countdown';
+import { DecoFrame } from '../../components/deco-frame';
 import { Envelope } from '../../components/envelope';
 import { Icon } from '../../components/icon';
 import { Lightbox, LightboxItem } from '../../components/lightbox';
@@ -15,7 +16,6 @@ interface LoveContent {
   youtubeId: string;
   letter: { title: string; paragraphs: string[] };
   reasons: string[];
-  timeline: { date: string; title: string; text: string; photoUrl: string | null }[];
   photos: { path: string; caption: string; url: string | null }[];
   video: { path: string; caption: string; url: string | null };
   coupons: { icon: string; title: string; text: string }[];
@@ -27,13 +27,15 @@ interface Petal {
   x: number;
   y: number;
   r: number;
+  /** Un sur trois : un petit cœur rose au lieu d'un pétale. */
+  heart: boolean;
 }
 
 const COUPONS_KEY = 'vn-coupons';
 
 @Component({
   selector: 'app-mon-amour',
-  imports: [FormsModule, TranslocoPipe, RoseRain, Envelope, Countdown, Lightbox, Icon],
+  imports: [FormsModule, TranslocoPipe, RoseRain, Envelope, Countdown, Lightbox, Icon, DecoFrame],
   templateUrl: './mon-amour.html',
   styleUrl: './mon-amour.css',
   host: {
@@ -55,6 +57,8 @@ export class MonAmour implements OnInit {
   protected readonly used = signal<Set<number>>(new Set());
   protected readonly petals = signal<Petal[]>([]);
   protected readonly lightboxIndex = signal<number | null>(null);
+  /** Cœurs roses et bleu ciel pour la pluie de cœurs. */
+  protected readonly pinkHearts = ['#F49AC1', '#E8648F', '#F7B6D2', '#87CEEB'];
 
   protected readonly media = computed<LightboxItem[]>(() => {
     const c = this.content();
@@ -133,7 +137,7 @@ export class MonAmour implements OnInit {
     }
   }
 
-  /** Pétales qui tombent au survol de la souris et au toucher. */
+  /** Pétales et cœurs qui tombent au survol de la souris et au toucher. */
   trail(e: PointerEvent, burst = false) {
     if (this.state() !== 'open') return;
     const now = performance.now();
@@ -144,6 +148,7 @@ export class MonAmour implements OnInit {
       x: e.clientX + (Math.random() - 0.5) * (burst ? 60 : 10),
       y: e.clientY,
       r: Math.random() * 360,
+      heart: this.petalId % 3 === 0,
     }));
     this.petals.update((p) => [...p.slice(-40), ...add]);
     const ids = new Set(add.map((p) => p.id));

@@ -2,7 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { RevealService } from '../services/reveal.service';
 
-/** Compte à rebours en carrés pleins (or, ou rouge sur /mon-amour) jusqu'à `target` (ms). */
+/** Compte à rebours en carrés pleins (bleu ciel, ou rose sur /mon-amour) jusqu'à `target` (ms). */
 @Component({
   selector: 'app-countdown',
   imports: [TranslocoPipe],
@@ -11,7 +11,7 @@ import { RevealService } from '../services/reveal.service';
       @for (p of parts(); track p.key) {
         <div
           class="flex w-16 flex-col items-center rounded-[3px] py-2.5 sm:w-20 sm:py-3"
-          [class]="accent() === 'rose' ? 'bg-rose text-creme' : 'bg-ciel text-noir'"
+          [class]="accent() === 'rose' ? 'bg-rose text-noir' : 'bg-ciel text-noir'"
         >
           <span class="font-display text-3xl leading-none tabular-nums sm:text-4xl">{{ p.value }}</span>
           <span class="mt-1 font-sans text-[10px] sm:text-xs">{{ 'countdown.' + p.key | transloco }}</span>
