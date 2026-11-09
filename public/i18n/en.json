@@ -92,7 +92,7 @@
   },
   "love": {
     "lockTitle": "A place just for you",
-    "lockText": "Enter the secret code he gave you.",
+    "lockText": "Enter the code I gave you.",
     "code": "Secret code",
     "open": "Open",
     "badCode": "That's not the right code… try again",
@@ -100,10 +100,12 @@
     "envelopeHint": "Tap the seal to open it",
     "reasons": "12 reasons why I love you",
     "gallery": "The two of us",
-    "coupons": "What would make you happiest?",
+    "coupons": "What would make you happiest when we see each other?",
     "useCoupon": "Use",
     "used": "Used",
     "birthday": "Happy birthday, darling!!!",
-    "couponsIntro": "Pick whatever would make you happiest: each voucher is yours, to use whenever you like. Just show it to me and I'll take care of the rest, with all my love."
+    "couponsIntro": "Pick what would make you happiest when we see each other, then send me a screenshot of your choice. I'll take care of the rest, with all my love.",
+    "reasonsHint": "Tap a card to reveal each reason.",
+    "tapToStart": "Tap to begin"
   }
 }

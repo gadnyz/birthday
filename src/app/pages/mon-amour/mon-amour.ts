@@ -34,6 +34,8 @@ const COUPONS_KEY = 'vn-coupons';
 /** Chanson KS Bloom - « La Mour », lue en boucle à partir de la 30e seconde. */
 const SONG_URL = '/KS_BLOOM_-_La_Mour_Clip_officiel.mp3';
 const SONG_START = 30;
+/** Gestes qui autorisent le son (sur mobile, c'est la fin du toucher qui compte). */
+const UNLOCK_EVENTS = ['pointerup', 'touchend', 'click', 'keydown'] as const;
 
 @Component({
   selector: 'app-mon-amour',
@@ -76,6 +78,8 @@ export class MonAmour implements OnInit, OnDestroy {
 
   // ---------- Musique ----------
   protected readonly playing = signal(false);
+  /** Le navigateur a bloqué le son : on affiche l'écran « touche pour commencer ». */
+  protected readonly needsTap = signal(false);
   private song?: HTMLAudioElement;
   private gestureStart = 0;
   private readonly unlockAudio = () => {
@@ -106,11 +110,13 @@ export class MonAmour implements OnInit, OnDestroy {
     if (this.busy() || !this.code().trim()) return;
     this.busy.set(true);
     this.badCode.set(false);
+    this.playSong(); // dans le geste du clic : le navigateur autorise le son
     try {
       await firstValueFrom(this.http.post('/api/mon-amour/unlock', { code: this.code() }));
       await this.load();
     } catch {
       this.badCode.set(true);
+      this.song?.pause();
     } finally {
       this.busy.set(false);
     }
@@ -129,8 +135,12 @@ export class MonAmour implements OnInit, OnDestroy {
    */
   playSong() {
     if (!this.song) {
-      this.song = new Audio(SONG_URL);
+      // #t=30 : démarre directement à la 30e seconde.
+      this.song = new Audio(SONG_URL + '#t=' + SONG_START);
       this.song.preload = 'auto';
+      this.song.addEventListener('loadedmetadata', () => {
+        if (this.song!.currentTime < SONG_START - 1) this.song!.currentTime = SONG_START;
+      });
       // Fin du morceau : on reprend à la 30e seconde, tant que la page reste ouverte.
       this.song.addEventListener('ended', () => {
         this.song!.currentTime = SONG_START;
@@ -138,14 +148,17 @@ export class MonAmour implements OnInit, OnDestroy {
       });
       this.song.addEventListener('play', () => this.playing.set(true));
       this.song.addEventListener('pause', () => this.playing.set(false));
-      this.song.currentTime = SONG_START;
     }
     this.song
       .play()
-      .then(() => this.removeUnlock())
+      .then(() => {
+        this.needsTap.set(false);
+        this.removeUnlock();
+      })
       .catch(() => {
-        document.addEventListener('pointerdown', this.unlockAudio, { once: true });
-        document.addEventListener('keydown', this.unlockAudio, { once: true });
+        // Lecture bloquée sans geste : on attend le premier vrai toucher / clic.
+        this.needsTap.set(true);
+        for (const ev of UNLOCK_EVENTS) document.addEventListener(ev, this.unlockAudio, { once: true });
       });
   }
 
@@ -157,8 +170,7 @@ export class MonAmour implements OnInit, OnDestroy {
   }
 
   private removeUnlock() {
-    document.removeEventListener('pointerdown', this.unlockAudio);
-    document.removeEventListener('keydown', this.unlockAudio);
+    for (const ev of UNLOCK_EVENTS) document.removeEventListener(ev, this.unlockAudio);
   }
 
   ngOnDestroy() {
