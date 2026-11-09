@@ -1,0 +1,118 @@
+@switch (state()) {
+  @case ('checking') {
+    <p class="py-32 text-center font-sans text-creme/60">Chargement…</p>
+  }
+
+  @case ('login') {
+    <section class="flex min-h-[70vh] items-center justify-center px-4">
+      <form class="card w-full max-w-sm space-y-4 p-6" (ngSubmit)="login()">
+        <h1 class="title-script text-4xl">Espace organisateur</h1>
+        <input type="password" name="password" class="field" placeholder="Mot de passe" autocomplete="current-password" [(ngModel)]="password" />
+        @if (loginError()) {
+          <p class="font-sans text-sm text-rose">Mot de passe incorrect (ou ADMIN_PASSWORD non configuré).</p>
+        }
+        <button type="submit" class="btn btn-ciel w-full">Se connecter</button>
+      </form>
+    </section>
+  }
+
+  @case ('ready') {
+    @if (data(); as d) {
+      <section class="mx-auto max-w-6xl space-y-8 px-4 py-8 font-sans">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <h1 class="title-script text-5xl">Tableau de bord</h1>
+          <div class="flex gap-2">
+            <button type="button" class="btn btn-ghost px-4 py-2" (click)="load()"><app-icon name="refresh" class="size-4" /> Actualiser</button>
+            <button type="button" class="btn btn-ghost px-4 py-2" (click)="logout()"><app-icon name="logout" class="size-4" /> Déconnexion</button>
+          </div>
+        </div>
+
+        <!-- Compteurs -->
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          @for (s of [
+            { label: 'Messages reçus', value: d.stats.total },
+            { label: 'Visibles', value: d.stats.visible },
+            { label: 'Photos', value: d.stats.photos },
+            { label: 'Vidéos', value: d.stats.videos }
+          ]; track s.label) {
+            <div class="card p-4">
+              <p class="text-3xl font-semibold text-ciel tabular-nums">{{ s.value }}</p>
+              <p class="text-xs tracking-wider text-creme/60 uppercase">{{ s.label }}</p>
+            </div>
+          }
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-3">
+          <!-- Révélation -->
+          <div class="card p-5">
+            <h2 class="mb-3 text-sm font-semibold tracking-wider text-ciel-clair uppercase">Révélation</h2>
+            @if (d.revealed) {
+              <p class="flex items-center gap-2 text-lg"><app-icon name="sparkles" class="size-5 text-ciel" /> La surprise est dévoilée.</p>
+            } @else {
+              <app-countdown [target]="reveal.revealAt()" />
+            }
+            <p class="mt-3 text-xs text-creme/50">REVEAL_AT = {{ d.revealAt }}</p>
+          </div>
+
+          <!-- Qui n'a pas encore écrit -->
+          <div class="card p-5">
+            <h2 class="mb-3 text-sm font-semibold tracking-wider text-ciel-clair uppercase">Qui n'a pas encore écrit ?</h2>
+            <textarea class="field min-h-28 text-sm" placeholder="Un nom par ligne (enregistré dans ce navigateur)" [(ngModel)]="expected"></textarea>
+            @if (missing().length) {
+              <p class="mt-3 text-sm text-creme/70">À relancer ({{ missing().length }}) :</p>
+              <ul class="mt-1 flex flex-wrap gap-1.5">
+                @for (n of missing(); track n) {
+                  <li class="rounded-full bg-rose/15 px-3 py-1 text-xs text-creme">{{ n }}</li>
+                }
+              </ul>
+            } @else if (expected().trim()) {
+              <p class="mt-3 flex items-center gap-2 text-sm text-ciel"><app-icon name="check" class="size-4" /> Tout le monde a écrit !</p>
+            }
+          </div>
+
+          <!-- QR code -->
+          <div class="card p-5 text-center">
+            <h2 class="mb-3 text-sm font-semibold tracking-wider text-ciel-clair uppercase">QR code pour la soirée</h2>
+            <canvas #qr class="mx-auto rounded-lg"></canvas>
+            <input class="field mt-3 text-center text-xs" [(ngModel)]="siteUrl" aria-label="URL du QR code" />
+            <button type="button" class="btn btn-ghost mt-3 px-4 py-2" (click)="downloadQr()"><app-icon name="download" class="size-4" /> Télécharger (PNG)</button>
+          </div>
+        </div>
+
+        <!-- Modération -->
+        <div>
+          <h2 class="mb-3 text-sm font-semibold tracking-wider text-ciel-clair uppercase">Modération</h2>
+          <div class="space-y-3">
+            @for (m of d.messages; track m.id) {
+              <article class="card flex flex-col gap-4 p-4 sm:flex-row" [class.opacity-50]="m.hidden">
+                @if (m.photo_url) {
+                  <img [src]="m.photo_url" alt="" class="h-28 w-28 shrink-0 rounded-lg object-cover" />
+                }
+                @if (m.video_url) {
+                  <video [src]="m.video_url" controls class="h-28 w-44 shrink-0 rounded-lg bg-black"></video>
+                }
+                <div class="min-w-0 flex-1">
+                  <p class="font-semibold text-ciel">
+                    {{ m.author_name }}
+                    <span class="font-normal text-creme/50">· {{ m.relation }} · {{ m.lang }} · {{ m.city }} · {{ m.created_at | date: 'dd/MM HH:mm' }} · <app-icon name="heart" [filled]="true" class="size-3 text-ciel" /> {{ m.hearts }}</span>
+                  </p>
+                  <p class="mt-1 font-serif text-lg whitespace-pre-line">{{ m.body }}</p>
+                </div>
+                <div class="flex shrink-0 gap-2 sm:flex-col">
+                  @if (m.hidden) {
+                    <button type="button" class="btn btn-ghost px-4 py-1.5" (click)="act(m, 'show')"><app-icon name="eye" class="size-4" /> Afficher</button>
+                  } @else {
+                    <button type="button" class="btn btn-ghost px-4 py-1.5" (click)="act(m, 'hide')"><app-icon name="eye-off" class="size-4" /> Masquer</button>
+                  }
+                  <button type="button" class="btn px-4 py-1.5 text-rose hover:bg-rose/10" (click)="act(m, 'delete')"><app-icon name="trash" class="size-4" /> Supprimer</button>
+                </div>
+              </article>
+            } @empty {
+              <p class="text-creme/60">Aucun message pour l'instant.</p>
+            }
+          </div>
+        </div>
+      </section>
+    }
+  }
+}

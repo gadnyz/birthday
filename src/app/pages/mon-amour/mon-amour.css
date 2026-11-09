@@ -1,0 +1,77 @@
+:host {
+  display: block;
+  background:
+    radial-gradient(ellipse at top, rgb(200 16 46 / 0.18), transparent 60%),
+    var(--color-noir);
+  min-height: 100dvh;
+}
+
+.letter-paper {
+  background:
+    repeating-linear-gradient(transparent 0 2.1rem, rgb(200 16 46 / 0.08) 2.1rem calc(2.1rem + 1px)),
+    var(--color-creme);
+}
+
+.trail-petal {
+  position: absolute;
+  width: 12px;
+  height: 18px;
+  margin: -9px 0 0 -6px;
+  border-radius: 80% 0 80% 0;
+  background: var(--color-rose);
+  animation: drift 1.6s ease-in forwards;
+}
+@keyframes drift {
+  from { transform: rotate(var(--r)) translateY(0); opacity: 1; }
+  to { transform: rotate(calc(var(--r) + 120deg)) translateY(90px); opacity: 0; }
+}
+
+.reason {
+  position: relative;
+  perspective: 800px;
+}
+.reason .face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  backface-visibility: hidden;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.reason .front {
+  background: linear-gradient(145deg, #c8102e, #7a0a1c);
+  color: var(--color-creme);
+}
+.reason .back {
+  background: var(--color-creme);
+  color: var(--color-noir);
+  font-size: 1.05rem;
+  line-height: 1.35;
+  text-align: center;
+  transform: rotateY(180deg);
+}
+.reason.flipped .front { transform: rotateY(180deg); }
+.reason.flipped .back { transform: rotateY(360deg); }
+
+.coupon {
+  background: var(--color-noir-soft);
+  border: 2px dashed rgb(200 16 46 / 0.5);
+}
+.coupon::before,
+.coupon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: -0.75rem;
+  border-radius: 9999px;
+  background: var(--color-noir);
+}
+.coupon::before { left: -0.8rem; }
+.coupon::after { right: -0.8rem; }

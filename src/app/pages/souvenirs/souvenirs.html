@@ -1,0 +1,97 @@
+@if (loading()) {
+  <p class="py-32 text-center font-sans text-creme/60">{{ 'wall.loading' | transloco }}</p>
+} @else if (locked()) {
+  <div class="mx-auto max-w-lg px-4 py-32 text-center">
+    <app-icon name="secret" class="size-12 text-ciel" />
+    <p class="mt-4 text-2xl">{{ 'wall.locked' | transloco }}</p>
+    <a routerLink="/" class="btn btn-ghost mt-8">{{ 'wall.back' | transloco }}</a>
+  </div>
+} @else {
+  <section class="mx-auto max-w-6xl px-4 pt-6 pb-16">
+    <header class="text-center">
+      <h1 class="title-script text-6xl sm:text-7xl">{{ 'wall.title' | transloco }}</h1>
+      <p class="mt-2 text-xl text-creme/70">{{ 'wall.subtitle' | transloco: { count: messages().length } }}</p>
+    </header>
+
+    <!-- Barre d'outils -->
+    <div class="no-print sticky top-16 z-20 -mx-4 mt-8 flex flex-wrap items-center justify-center gap-2 bg-noir/85 px-4 py-3 font-sans text-sm backdrop-blur">
+      @for (t of ['all', 'text', 'photo', 'video']; track t) {
+        <button type="button" class="rounded-full border px-4 py-1.5 transition"
+          [class]="type() === t ? 'border-ciel bg-ciel text-noir' : 'border-white/10 text-creme/70 hover:border-ciel/50'"
+          (click)="type.set($any(t))">
+          {{ 'wall.' + t | transloco }}
+        </button>
+      }
+      <select class="rounded-full border border-white/10 bg-noir-soft px-3 py-1.5" [value]="lang()" (change)="lang.set($any($event.target).value)">
+        <option value="all">{{ 'wall.allLangs' | transloco }}</option>
+        @for (l of langs; track l) {
+          <option [value]="l">{{ 'langs.' + l | transloco }}</option>
+        }
+      </select>
+      <span class="mx-1 hidden h-6 w-px bg-white/10 sm:block"></span>
+      <button type="button" class="btn btn-ghost px-4 py-1.5" (click)="startSlideshow()"><app-icon name="play" class="size-4" /> {{ 'wall.slideshow' | transloco }}</button>
+      <button type="button" class="btn btn-ghost px-4 py-1.5" (click)="print()"><app-icon name="book" class="size-4" /> {{ 'wall.print' | transloco }}</button>
+    </div>
+
+    <!-- Grille en colonnes (maçonnerie) -->
+    @if (filtered().length) {
+      <div class="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3">
+        @for (m of filtered(); track m.id) {
+          <app-message-card [message]="m" (openMedia)="openMedia(m, $event)" (heart)="heart(m)" />
+        }
+      </div>
+    } @else {
+      <p class="py-16 text-center text-creme/60">{{ 'wall.empty' | transloco }}</p>
+    }
+
+    <!-- Carte -->
+    @if (mapPoints().length) {
+      <section class="no-print mt-16">
+        <h2 class="title-script mb-6 flex items-center justify-center gap-3 text-5xl"><app-icon name="globe" [stroke]="1.25" class="size-9" /> {{ 'wall.mapTitle' | transloco }}</h2>
+        <app-memory-map [points]="mapPoints()" />
+      </section>
+    }
+  </section>
+
+  <app-lightbox [items]="media()" [(index)]="lightboxIndex" (close)="lightboxIndex.set(null)" />
+
+  <!-- =============== DIAPORAMA (pour projeter pendant la soirée) =============== -->
+  @if (slideshow() && current()) {
+    <div class="fixed inset-0 z-50 flex flex-col bg-noir">
+      <div class="pointer-events-none absolute inset-0 overflow-hidden">
+        <div class="absolute -top-40 left-1/2 h-[50rem] w-[50rem] -translate-x-1/2 rounded-full bg-ciel/10 blur-3xl"></div>
+      </div>
+
+      @for (m of [current()!]; track m.id) {
+      <div class="relative flex min-h-0 flex-1 flex-col items-center justify-center gap-8 p-6 sm:flex-row sm:p-12">
+        @if (m.photo_url) {
+          <img [src]="m.photo_url" alt="" class="max-h-[45vh] max-w-full rounded-2xl object-contain shadow-2xl sm:max-h-[80vh] sm:max-w-[50%] animate-float-up" />
+        }
+        @if (m.video_url) {
+          <video [src]="m.video_url" autoplay playsinline controls (ended)="next()"
+            class="max-h-[50vh] max-w-full rounded-2xl sm:max-h-[80vh] sm:max-w-[60%]"></video>
+        }
+        <div class="max-w-2xl text-center sm:text-left animate-float-up">
+          @if (m.body) {
+            <p class="text-2xl leading-relaxed whitespace-pre-line sm:text-4xl" [attr.lang]="m.lang">“{{ m.body }}”</p>
+          }
+          <p class="mt-6 font-script text-4xl text-ciel sm:text-5xl">{{ m.author_name }}</p>
+          @if (m.city) {
+            <p class="mt-1 inline-flex items-center gap-1.5 font-sans text-sm text-creme/50"><app-icon name="map-pin" class="size-4" /> {{ m.city }}</p>
+          }
+        </div>
+      </div>
+      }
+
+      <div class="relative flex items-center justify-center gap-3 p-4 font-sans text-sm">
+        <button type="button" class="btn btn-ghost px-4 py-2" (click)="prev()"><app-icon name="chevron-left" class="size-4" /> {{ 'wall.prev' | transloco }}</button>
+        <button type="button" class="btn btn-ghost px-4 py-2" (click)="playing.set(!playing())">
+          <app-icon [name]="playing() ? 'pause' : 'play'" class="size-4" /> {{ (playing() ? 'wall.pause' : 'wall.play') | transloco }}
+        </button>
+        <button type="button" class="btn btn-ghost px-4 py-2" (click)="next()">{{ 'wall.next' | transloco }} <app-icon name="chevron-right" class="size-4" /></button>
+        <span class="mx-2 tabular-nums text-creme/50">{{ (slide() % messages().length) + 1 }} / {{ messages().length }}</span>
+        <button type="button" class="btn btn-ciel px-4 py-2" (click)="exitSlideshow()">{{ 'wall.exit' | transloco }}</button>
+      </div>
+    </div>
+  }
+}

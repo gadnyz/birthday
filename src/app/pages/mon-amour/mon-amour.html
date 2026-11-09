@@ -1,0 +1,147 @@
+@switch (state()) {
+  @case ('checking') {
+    <div class="flex min-h-[70vh] items-center justify-center text-rose animate-pulse"><app-icon name="rose" [stroke]="1.25" class="size-14" /></div>
+  }
+
+  @case ('locked') {
+    <!-- =============== Écran du code secret =============== -->
+    <section class="flex min-h-[80vh] items-center justify-center px-4">
+      <form class="w-full max-w-sm text-center" (ngSubmit)="unlock()">
+        <app-icon name="rose" [stroke]="1.25" class="size-16 text-rose" />
+        <h1 class="mt-4 font-script text-5xl text-rose">{{ 'love.lockTitle' | transloco }}</h1>
+        <p class="mt-3 text-lg text-creme/70">{{ 'love.lockText' | transloco }}</p>
+        <label class="sr-only" for="code">{{ 'love.code' | transloco }}</label>
+        <input id="code" name="code" type="password" autocomplete="off" autocapitalize="off"
+          class="field mt-8 text-center text-lg tracking-[0.3em] focus:border-rose focus:ring-rose/30"
+          [placeholder]="'love.code' | transloco" [(ngModel)]="code" />
+        @if (badCode()) {
+          <p class="mt-3 font-sans text-sm text-rose" role="alert">{{ 'love.badCode' | transloco }}</p>
+        }
+        <button type="submit" class="btn btn-rose mt-6 w-full py-4" [disabled]="busy()"><app-icon name="lock" class="size-5" /> {{ 'love.open' | transloco }}</button>
+      </form>
+    </section>
+  }
+
+  @case ('open') {
+    @if (content(); as c) {
+      <app-rose-rain kind="petals" [count]="18" [loop]="true" [spread]="10" />
+
+      <!-- Pétales au survol / toucher -->
+      <div class="pointer-events-none fixed inset-0 z-40" aria-hidden="true">
+        @for (p of petals(); track p.id) {
+          <i class="trail-petal" [style.left.px]="p.x" [style.top.px]="p.y" [style.--r]="p.r + 'deg'"></i>
+        }
+      </div>
+
+      <!-- 1. Enveloppe et lettre -->
+      <section class="mx-auto max-w-2xl px-4 pt-10 pb-16 text-center">
+        <h1 class="font-script text-5xl text-rose sm:text-6xl">{{ 'love.envelope' | transloco }}</h1>
+        <div class="mt-10">
+          <app-envelope [title]="c.letter.title" [hint]="'love.envelopeHint' | transloco" (opens)="letterOpen.set(true)" />
+        </div>
+
+        @if (letterOpen()) {
+          <article class="letter-paper mt-6 rounded-2xl p-6 text-left text-noir shadow-2xl sm:p-10 animate-float-up">
+            <p class="font-script text-4xl text-rose">{{ c.letter.title }}</p>
+            @for (p of c.letter.paragraphs; track $index) {
+              <p class="mt-4 text-xl leading-relaxed">{{ p }}</p>
+            }
+            <p class="mt-8 text-right font-script text-3xl text-rose">{{ c.from }}</p>
+          </article>
+
+          <!-- Notre chanson : KS Bloom - La Mour -->
+          <div class="mt-10">
+            <h2 class="flex items-center justify-center gap-3 font-script text-4xl text-rose"><app-icon name="music" [stroke]="1.5" class="size-7" /> {{ 'love.song' | transloco }}</h2>
+            <p class="mt-1 font-sans text-sm text-creme/60">KS Bloom — « La Mour »</p>
+            @if (songUrl(); as url) {
+              <div class="mt-4 aspect-video overflow-hidden rounded-2xl border border-rose/30">
+                <iframe class="h-full w-full" [src]="url" title="KS Bloom - La Mour" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+              </div>
+            } @else {
+              <a class="btn btn-rose mt-4" target="_blank" rel="noopener"
+                href="https://www.youtube.com/results?search_query=KS+Bloom+La+Mour"><app-icon name="play" [filled]="true" class="size-4" /> {{ 'love.searchSong' | transloco }}</a>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- 2. Nous deux : vidéo + galerie -->
+      <section class="mx-auto max-w-5xl px-4 py-12">
+        <h2 class="mb-8 text-center font-script text-5xl text-rose">{{ 'love.gallery' | transloco }}</h2>
+        @if (c.video.url) {
+          <video [src]="c.video.url" controls playsinline preload="metadata" class="mx-auto mb-6 max-h-[70vh] w-full rounded-2xl bg-black"></video>
+        }
+        <div class="columns-2 gap-3 sm:columns-3">
+          @for (p of media(); track p.url; let i = $index) {
+            <button type="button" class="mb-3 block w-full overflow-hidden rounded-2xl" (click)="lightboxIndex.set(i)">
+              <img [src]="p.url" alt="" loading="lazy" class="w-full transition duration-500 hover:scale-105" />
+            </button>
+          }
+        </div>
+      </section>
+
+      <!-- 3. 12 raisons -->
+      <section class="mx-auto max-w-5xl px-4 py-12">
+        <h2 class="mb-8 text-center font-script text-5xl text-rose">{{ 'love.reasons' | transloco }}</h2>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          @for (r of c.reasons; track $index; let i = $index) {
+            <button type="button" class="reason aspect-square" [class.flipped]="flipped().has(i)" (click)="toggleReason(i)">
+              <span class="face front">
+                <span class="font-script text-6xl">{{ i + 1 }}</span>
+                <app-icon name="heart" [filled]="true" class="size-5" />
+              </span>
+              <span class="face back">{{ r }}</span>
+            </button>
+          }
+        </div>
+      </section>
+
+      <!-- 4. Frise de notre histoire -->
+      <section class="mx-auto max-w-3xl px-4 py-12">
+        <h2 class="mb-10 text-center font-script text-5xl text-rose">{{ 'love.story' | transloco }}</h2>
+        <ol class="relative border-l-2 border-rose/40 pl-8">
+          @for (t of c.timeline; track $index) {
+            <li class="relative mb-12 last:mb-0">
+              <span class="absolute top-1 -left-[2.6rem] flex h-6 w-6 items-center justify-center rounded-full bg-rose text-creme"><app-icon name="heart" [filled]="true" class="size-3" /></span>
+              <p class="font-sans text-xs tracking-widest text-rose uppercase">{{ t.date }}</p>
+              <h3 class="mt-1 text-2xl font-semibold">{{ t.title }}</h3>
+              <p class="mt-2 text-lg text-creme/80">{{ t.text }}</p>
+              @if (t.photoUrl) {
+                <img [src]="t.photoUrl" alt="" loading="lazy" class="mt-4 max-h-80 rounded-xl object-cover" />
+              }
+            </li>
+          }
+        </ol>
+      </section>
+
+      <!-- 5. Bons cadeaux -->
+      <section class="mx-auto max-w-5xl px-4 py-12">
+        <h2 class="mb-8 text-center font-script text-5xl text-rose">{{ 'love.coupons' | transloco }}</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          @for (k of c.coupons; track $index; let i = $index) {
+            <div class="coupon relative rounded-2xl p-6" [class.opacity-50]="used().has(i)">
+              <app-icon [name]="k.icon" [stroke]="1.5" class="size-9 text-rose" />
+              <h3 class="mt-3 text-2xl font-semibold">{{ k.title }}</h3>
+              <p class="mt-1 text-creme/75">{{ k.text }}</p>
+              <button type="button" class="btn btn-rose mt-5 px-5 py-2" [disabled]="used().has(i)" (click)="useCoupon(i)">
+                {{ (used().has(i) ? 'love.used' : 'love.useCoupon') | transloco }}
+              </button>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- 6. Compte à rebours vers le prochain grand jour -->
+      @if (nextDateMs(); as target) {
+        <section class="mx-auto max-w-2xl px-4 py-12 pb-24 text-center">
+          <h2 class="mb-6 font-script text-5xl text-rose">{{ c.nextDate.label }}</h2>
+          <app-countdown [target]="target" accent="rose" />
+        </section>
+      }
+
+      <p class="flex items-center justify-center gap-3 pb-16 font-script text-4xl text-rose">Je t'aime <app-icon name="heart" [filled]="true" class="size-7" /></p>
+
+      <app-lightbox [items]="media()" [(index)]="lightboxIndex" (close)="lightboxIndex.set(null)" />
+    }
+  }
+}

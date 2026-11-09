@@ -1,0 +1,90 @@
+@import 'tailwindcss';
+
+/* Identité visuelle (équivalent Tailwind v4 du tailwind.config.js décrit dans le README) */
+@theme {
+  --color-noir: #0b0b0f;
+  --color-noir-soft: #16161d;
+  --color-ciel: #87ceeb;
+  --color-ciel-clair: #b9e4f5;
+  --color-ciel-fonce: #4fa9d1;
+  --color-rose: #c8102e;
+  --color-creme: #f7f3ee;
+
+  --font-script: 'Great Vibes', cursive;
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Inter', sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-noir text-creme font-serif antialiased min-h-dvh;
+  }
+  input,
+  textarea,
+  select,
+  button {
+    @apply font-sans;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-sans text-sm font-semibold tracking-wide transition
+      disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-ciel {
+    @apply bg-ciel text-noir hover:bg-ciel-clair focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ciel;
+  }
+  .btn-ghost {
+    @apply border border-ciel/40 text-ciel hover:border-ciel hover:bg-ciel/10;
+  }
+  .btn-rose {
+    @apply bg-rose text-creme hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose;
+  }
+  .field {
+    @apply w-full rounded-xl border border-white/10 bg-noir-soft px-4 py-3 font-sans text-base text-creme placeholder:text-creme/35
+      focus:border-ciel focus:outline-none focus:ring-2 focus:ring-ciel/30;
+  }
+  .label {
+    @apply mb-1.5 block font-sans text-sm font-medium text-ciel-clair;
+  }
+  .card {
+    @apply rounded-2xl border border-white/8 bg-noir-soft/80 backdrop-blur;
+  }
+  .title-script {
+    @apply font-script text-ciel leading-tight;
+  }
+}
+
+/* Leaflet : fond sombre */
+.leaflet-container {
+  background: var(--color-noir-soft);
+  font-family: var(--font-sans);
+}
+
+@keyframes float-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-float-up {
+  animation: float-up 0.7s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Livre souvenir : impression / export PDF depuis /souvenirs */
+@media print {
+  body { background: #fff; color: #111; }
+  .no-print { display: none !important; }
+  .print-card { break-inside: avoid; border: 1px solid #ddd !important; background: #fff !important; color: #111 !important; }
+}
