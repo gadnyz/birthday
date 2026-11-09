@@ -13,7 +13,6 @@ interface AdminMessage {
   relation: string;
   lang: string;
   body: string;
-  city: string | null;
   hearts: number;
   hidden: boolean;
   created_at: string;

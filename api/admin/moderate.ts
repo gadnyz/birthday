@@ -27,7 +27,7 @@ async function list(req: VercelRequest, res: VercelResponse) {
 
   const { data, error } = await db()
     .from('messages')
-    .select('id, author_name, relation, lang, body, photo_path, video_path, city, hearts, hidden, created_at')
+    .select('id, author_name, relation, lang, body, photo_path, video_path, hearts, hidden, created_at')
     .order('created_at', { ascending: false });
   if (error) throw error;
 

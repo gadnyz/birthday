@@ -50,8 +50,8 @@ revoke all on function public.increment_hearts(uuid) from public, anon, authenti
 -- ------------------------------------------------------------
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values
-  ('souvenirs', 'souvenirs', false, 52428800,
-     array['image/jpeg','image/png','image/webp','video/mp4','video/quicktime','video/webm','video/x-m4v']),
+  ('souvenirs', 'souvenirs', false, 10485760,
+     array['image/jpeg','image/png','image/webp']),
   ('mon-amour', 'mon-amour', false, 104857600, null)
 on conflict (id) do update
   set public = excluded.public,

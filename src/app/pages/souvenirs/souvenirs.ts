@@ -3,16 +3,14 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { Icon } from '../../components/icon';
 import { Lightbox, LightboxItem } from '../../components/lightbox';
-import { MapPoint, MemoryMap } from '../../components/memory-map';
 import { MessageCard } from '../../components/message-card';
-import { LANGS } from '../../services/i18n';
-import { Lang, Message, MessagesService } from '../../services/messages.service';
+import { Message, MessagesService } from '../../services/messages.service';
 
-type TypeFilter = 'all' | 'text' | 'photo' | 'video';
+type TypeFilter = 'all' | 'text' | 'photo';
 
 @Component({
   selector: 'app-souvenirs',
-  imports: [TranslocoPipe, RouterLink, MessageCard, Lightbox, MemoryMap, Icon],
+  imports: [TranslocoPipe, RouterLink, MessageCard, Lightbox, Icon],
   templateUrl: './souvenirs.html',
 })
 export class Souvenirs implements OnInit, OnDestroy {
@@ -22,21 +20,18 @@ export class Souvenirs implements OnInit, OnDestroy {
   /** Paramètre d'URL ?mode=diaporama (liaison automatique via withComponentInputBinding). */
   readonly mode = input<string>();
 
-  protected readonly langs = LANGS;
   protected readonly loading = signal(true);
   protected readonly locked = signal(false);
   protected readonly messages = signal<Message[]>([]);
   protected readonly type = signal<TypeFilter>('all');
-  protected readonly lang = signal<Lang | 'all'>('all');
   protected readonly lightboxIndex = signal<number | null>(null);
 
   protected readonly filtered = computed(() =>
     this.messages().filter((m) => {
       const t = this.type();
       if (t === 'photo' && !m.photo_url) return false;
-      if (t === 'video' && !m.video_url) return false;
       if (t === 'text' && (m.photo_url || m.video_url)) return false;
-      return this.lang() === 'all' || m.lang === this.lang();
+      return true;
     }),
   );
 
@@ -44,24 +39,13 @@ export class Souvenirs implements OnInit, OnDestroy {
   protected readonly media = computed(() =>
     this.filtered().flatMap((m) => {
       const items: (LightboxItem & { id: string })[] = [];
-      const caption = `${m.author_name}${m.city ? ' · ' + m.city : ''}`;
+      const caption = m.author_name;
       if (m.photo_url) items.push({ id: m.id + ':photo', type: 'photo', url: m.photo_url, caption });
       if (m.video_url) items.push({ id: m.id + ':video', type: 'video', url: m.video_url, caption });
       return items;
     }),
   );
 
-  protected readonly mapPoints = computed<MapPoint[]>(() => {
-    const byCity = new Map<string, MapPoint>();
-    for (const m of this.messages()) {
-      if (m.lat == null || m.lng == null || !m.city) continue;
-      const key = m.city.trim().toLowerCase();
-      const p = byCity.get(key) ?? { lat: m.lat, lng: m.lng, city: m.city, names: [] };
-      p.names.push(m.author_name);
-      byCity.set(key, p);
-    }
-    return [...byCity.values()];
-  });
 
   // ---------- Diaporama ----------
   protected readonly slideshow = computed(() => this.mode() === 'diaporama');

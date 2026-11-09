@@ -9,7 +9,7 @@ import {
 } from '@jsverse/transloco';
 import type { Lang } from './messages.service';
 
-export const LANGS: Lang[] = ['fr', 'en', 'sw'];
+export const LANGS: Lang[] = ['fr', 'en'];
 const STORAGE_KEY = 'vn-lang';
 
 @Injectable({ providedIn: 'root' })

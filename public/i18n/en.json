@@ -1,6 +1,14 @@
 {
-  "langs": { "fr": "Français", "en": "English", "sw": "Kiswahili" },
-  "countdown": { "days": "days", "hours": "hours", "minutes": "minutes", "seconds": "seconds" },
+  "langs": {
+    "fr": "Français",
+    "en": "English"
+  },
+  "countdown": {
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes",
+    "seconds": "seconds"
+  },
   "home": {
     "title": "Happy birthday Victorine",
     "secret": "Shh… it's a surprise for Victorine",
@@ -20,18 +28,19 @@
     "name": "Your name",
     "namePlaceholder": "e.g. Auntie Grace",
     "relation": "How do you know Victorine?",
-    "relations": { "famille": "Family", "ami": "Friend", "collegue": "Colleague", "voisin": "Neighbour", "eglise": "Church", "autre": "Other" },
+    "relations": {
+      "famille": "Family",
+      "ami": "Friend",
+      "collegue": "Colleague",
+      "voisin": "Neighbour",
+      "eglise": "Church",
+      "autre": "Other"
+    },
     "memory": "What memory do you share with Victorine?",
     "memoryPlaceholder": "Share a memory, wish her the best…",
-    "lang": "Language of your message",
     "photo": "Memory photo",
-    "video": "Short video",
     "optional": "optional",
-    "videoHint": "30 s and 50 MB max",
-    "city": "Where are you writing from?",
-    "cityPlaceholder": "City or country",
     "choosePhoto": "Choose a photo",
-    "chooseVideo": "Choose a video",
     "remove": "Remove",
     "submit": "Send my message",
     "sending": "Sending…",
@@ -41,10 +50,7 @@
     "another": "Write another message",
     "errors": {
       "name": "Please enter your name.",
-      "empty": "Write a message or add a photo or a video.",
-      "videoTooLong": "The video is longer than 30 seconds.",
-      "videoTooBig": "The video is larger than 50 MB.",
-      "videoInvalid": "This video file is not supported.",
+      "empty": "Write a message or add a photo.",
       "photoInvalid": "This photo could not be read.",
       "tooMany": "Too many messages from this connection. Please try again in an hour.",
       "generic": "Oops, sending failed. Please try again in a moment."
@@ -56,12 +62,9 @@
     "all": "All",
     "text": "Words",
     "photo": "Photos",
-    "video": "Videos",
-    "allLangs": "All languages",
     "slideshow": "Slideshow",
     "print": "Memory book (PDF)",
     "empty": "No message for this filter.",
-    "mapTitle": "Thinking of you from…",
     "exit": "Exit",
     "locked": "The memory wall will open on November 9th at 8 pm.",
     "back": "Back to home",

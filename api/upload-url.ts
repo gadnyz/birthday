@@ -4,14 +4,10 @@ import { body, json, methodNotAllowed, str } from './_lib/http';
 import { BUCKET_SOUVENIRS, db } from './_lib/supabase';
 
 const MB = 1024 * 1024;
-const TYPES: Record<string, { kind: 'photo' | 'video'; ext: string; max: number }> = {
+const TYPES: Record<string, { kind: 'photo'; ext: string; max: number }> = {
   'image/jpeg': { kind: 'photo', ext: 'jpg', max: 8 * MB },
   'image/png': { kind: 'photo', ext: 'png', max: 8 * MB },
   'image/webp': { kind: 'photo', ext: 'webp', max: 8 * MB },
-  'video/mp4': { kind: 'video', ext: 'mp4', max: 50 * MB },
-  'video/quicktime': { kind: 'video', ext: 'mov', max: 50 * MB },
-  'video/webm': { kind: 'video', ext: 'webm', max: 50 * MB },
-  'video/x-m4v': { kind: 'video', ext: 'm4v', max: 50 * MB },
 };
 
 /**

@@ -1,12 +1,12 @@
 # 🎂 Birthday Victorine Nabino
 
 Application web dédiée à l'anniversaire de **Victorine Nabino**, le **09 novembre 2026**.
-Ses proches y déposent en secret des mots, des photos et de courtes vidéos. Le soir de son anniversaire, à **20h (GMT+2)**, tout se dévoile. Un espace privé, `/mon-amour`, est réservé à son fiancé.
+Ses proches y déposent en secret des mots et des photos. Le soir de son anniversaire, à **20h (GMT+2)**, tout se dévoile. Un espace privé, `/mon-amour`, est réservé à son fiancé.
 
 - **Stack :** Angular (composants standalone, signals) + Tailwind CSS
 - **Hébergement :** Vercel, projet `birthday-victorine-nabino` (Vercel n'accepte que les minuscules dans les noms de projet)
 - **Backend proposé :** Supabase (base Postgres et stockage de fichiers, offre gratuite), appelé via des fonctions serverless Vercel
-- **Langues :** français (par défaut), anglais, swahili
+- **Langues :** français (par défaut) et anglais
 
 ---
 
@@ -20,10 +20,8 @@ Le lien est partagé dès maintenant aux amis et à la famille, mais pas à Vict
 - Compte à rebours jusqu'à la révélation
 - Formulaire de contribution :
   - nom et lien avec Victorine (famille, ami·e, collègue…)
-  - message (« Quel souvenir gardes-tu avec Victorine ? »), dans la langue de son choix
+  - message (« Quel souvenir gardes-tu avec Victorine ? ») ; la langue n'est pas demandée, on enregistre celle de l'interface
   - photo souvenir (optionnelle, compressée côté navigateur avant l'envoi)
-  - courte vidéo (optionnelle, 30 s / 50 Mo maximum)
-  - ville ou pays d'où le message est envoyé (optionnel, utilisé pour la carte, voir 3.)
 - Après l'envoi : « Merci ! Ton message restera caché jusqu'au 9 novembre à 20h. »
 - Les messages des autres ne sont **pas** visibles avant 20h.
 
@@ -34,8 +32,8 @@ Le lien est partagé dès maintenant aux amis et à la famille, mais pas à Vict
 
 ### 1.2 Mur des souvenirs `/souvenirs`
 - Accessible uniquement après la révélation
-- Grille de cartes (texte, photo, vidéo), filtrable par type et par langue
-- Visionneuse plein écran pour les photos et vidéos
+- Grille de cartes (texte, photo), filtrable par type
+- Visionneuse plein écran pour les photos
 - **Mode diaporama** (`/souvenirs?mode=diaporama`) : défilement automatique en plein écran, pour projeter les messages pendant la soirée
 - Réaction « ❤️ » de Victorine sur chaque message
 
@@ -73,7 +71,6 @@ Moment de la révélation : `REVEAL_AT = 2026-11-09T18:00:00Z` (20h00 à GMT+2).
 
 ## 3. Fonctionnalités supplémentaires proposées
 
-- 🌍 **Carte « Ils pensent à toi depuis… »** : un point par ville d'où un message a été envoyé. Ça marche très bien quand une partie des proches vit loin.
 - 🎙️ **Messages vocaux** enregistrés directement depuis le téléphone
 - 📖 **Livre souvenir en PDF** : export de tous les messages et photos, à garder ou à imprimer
 - 💌 **Capsule temporelle** : des messages à ne rouvrir que dans un an, pour son prochain anniversaire
@@ -114,8 +111,8 @@ theme: {
 ## 5. Langues
 
 - Traductions avec **Transloco** (changement de langue sans recharger la page)
-- Fichiers : `src/assets/i18n/fr.json`, `en.json`, `sw.json`
-- Sélecteur FR | EN | SW dans l'en-tête, avec la langue du navigateur détectée par défaut
+- Fichiers : `public/i18n/fr.json`, `en.json`
+- Sélecteur FR | EN dans l'en-tête, avec la langue du navigateur détectée par défaut
 - Les messages sont affichés dans la langue où ils ont été écrits (pas de traduction automatique)
 
 Exemples de clés :
@@ -126,7 +123,6 @@ Exemples de clés :
   "form.memory": "Quel souvenir gardes-tu avec Victorine ?"
 }
 ```
-(en swahili : « Heri ya siku ya kuzaliwa Victorine », à faire relire par un proche qui parle swahili)
 
 ---
 
@@ -136,7 +132,7 @@ Exemples de clés :
 birthday-victorine-nabino/
 ├── api/                          # fonctions serverless Vercel
 │   ├── messages.ts               # GET (après REVEAL_AT) / POST
-│   ├── upload-url.ts             # URL signée pour l'envoi de photos et vidéos
+│   ├── upload-url.ts             # URL signée pour l'envoi des photos
 │   ├── mon-amour/unlock.ts       # vérifie le code secret
 │   ├── mon-amour/content.ts      # contenu privé (avec jeton)
 │   └── admin/moderate.ts
@@ -170,11 +166,11 @@ birthday-victorine-nabino/
 | id | uuid | |
 | author_name | text | |
 | relation | text | famille, ami·e, collègue… |
-| lang | text | fr / en / sw |
+| lang | text | fr / en (langue de l'interface au moment de l'envoi) |
 | body | text | 2000 caractères maximum |
 | photo_path | text | nullable |
 | video_path | text | nullable |
-| city | text | nullable, pour la carte |
+| city | text | nullable, non utilisé (plus demandé) |
 | hearts | int | réactions de Victorine |
 | hidden | bool | modération |
 | created_at | timestamptz | |

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-export type Lang = 'fr' | 'en' | 'sw';
+export type Lang = 'fr' | 'en';
 export const RELATIONS = ['famille', 'ami', 'collegue', 'voisin', 'eglise', 'autre'] as const;
 export type Relation = (typeof RELATIONS)[number];
 
@@ -14,9 +14,6 @@ export interface Message {
   body: string;
   photo_url: string | null;
   video_url: string | null;
-  city: string | null;
-  lat: number | null;
-  lng: number | null;
   hearts: number;
   created_at: string;
 }
@@ -33,9 +30,7 @@ export interface NewMessage {
   relation: Relation;
   lang: Lang;
   body: string;
-  city: string;
   photo_path: string | null;
-  video_path: string | null;
   website: string; // champ piège
 }
 

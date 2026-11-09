@@ -33,9 +33,6 @@ import type { Message } from '../services/messages.service';
             <p class="font-semibold text-ciel">{{ m.author_name }}</p>
             <p class="text-xs text-creme/50">
               {{ 'form.relations.' + m.relation | transloco }}
-              @if (m.city) {
-                · <app-icon name="map-pin" class="size-3" /> {{ m.city }}
-              }
               · {{ m.created_at | date: 'd MMM' }}
             </p>
           </div>

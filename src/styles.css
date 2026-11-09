@@ -60,11 +60,6 @@
   }
 }
 
-/* Leaflet : fond sombre */
-.leaflet-container {
-  background: var(--color-noir-soft);
-  font-family: var(--font-sans);
-}
 
 @keyframes float-up {
   from { transform: translateY(12px); opacity: 0; }
