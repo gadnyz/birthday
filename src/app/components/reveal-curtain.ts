@@ -4,7 +4,7 @@ import { DecoFrame } from './deco-frame';
 import { Icon } from './icon';
 import { RoseRain } from './rose-rain';
 
-/** Écran d'ouverture du soir J : carte d'invitation, puis confettis et pétales. */
+/** Écran d'ouverture du soir J : carte d'accueil, puis confettis et pétales. */
 @Component({
   selector: 'app-reveal-curtain',
   imports: [TranslocoPipe, RoseRain, DecoFrame, Icon],

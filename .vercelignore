@@ -1,4 +1,5 @@
-private-media
-img
-.env
-.env.local
+# Exclusions du déploiement Vercel (chemins ancrés à la racine du projet)
+/private-media
+/img
+/.env
+/.env.local

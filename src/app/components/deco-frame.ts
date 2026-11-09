@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 /**
- * Carte d'invitation : panneau texturé, cadre doré fin en retrait,
+ * Carte d'accueil : panneau texturé, cadre doré fin en retrait,
  * et deux coins Art déco (rayons + points lumineux) en haut à droite et en bas à gauche.
  */
 @Component({

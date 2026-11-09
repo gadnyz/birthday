@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "upload:private": "node scripts/upload-private-media.mjs",
+    "upload:private": "node --env-file-if-exists=.env.local scripts/upload-private-media.mjs",
     "check:api": "tsc -p api/tsconfig.json"
   },
   "private": true,
