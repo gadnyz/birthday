@@ -20,7 +20,7 @@ import type { Message } from '../services/messages.service';
         <button type="button" class="relative block w-full bg-black" (click)="openMedia.emit('video')" aria-label="Lire la vidéo">
           <video [src]="m.video_url + '#t=0.5'" preload="metadata" muted playsinline class="w-full"></video>
           <span class="absolute inset-0 flex items-center justify-center">
-            <span class="flex h-14 w-14 items-center justify-center rounded-full bg-or/90 text-nuit shadow-lg"><app-icon name="play" [filled]="true" class="ml-1 size-6" /></span>
+            <span class="flex h-14 w-14 items-center justify-center rounded-full bg-ciel/90 text-noir shadow-lg"><app-icon name="play" [filled]="true" class="ml-1 size-6" /></span>
           </span>
         </button>
       }
@@ -30,7 +30,7 @@ import type { Message } from '../services/messages.service';
         }
         <footer class="mt-4 flex items-end justify-between gap-3 font-sans">
           <div>
-            <p class="font-script text-3xl leading-tight text-or">{{ m.author_name }}</p>
+            <p class="font-script text-3xl leading-tight text-ciel">{{ m.author_name }}</p>
             <p class="text-xs text-creme/50">
               {{ 'form.relations.' + m.relation | transloco }}
               · {{ m.created_at | date: 'd MMM' }}
@@ -39,7 +39,7 @@ import type { Message } from '../services/messages.service';
           <button
             type="button"
             class="no-print flex items-center gap-1 rounded-[3px] border px-3 py-1.5 text-sm transition"
-            [class]="liked() ? 'border-or bg-or text-nuit' : 'border-white/10 text-creme/70 hover:border-or/50'"
+            [class]="liked() ? 'border-ciel bg-ciel text-noir' : 'border-white/10 text-creme/70 hover:border-ciel/50'"
             (click)="like()"
             aria-label="J'aime"
           >

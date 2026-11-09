@@ -1,19 +1,19 @@
 @import 'tailwindcss';
 
 /*
- * Identité visuelle : « invitation de soirée »
- * Violet nuit profond, accents or, titres en script, nom en capitales condensées,
+ * Identité visuelle : les couleurs préférées de Victorine, noir + bleu ciel.
+ * Noir profond, accents bleu ciel, titres en script, nom en capitales condensées,
  * panneaux à texture topographique et cadres Art déco.
  * Le rouge des roses (--color-rose) reste réservé à /mon-amour.
  */
 @theme {
-  --color-nuit: #1d0b44;
-  --color-nuit-soft: #2a1758;
-  --color-nuit-clair: #3a2670;
-  --color-or: #f5c46a;
-  --color-or-clair: #fbdc9c;
-  --color-or-fonce: #d9a441;
-  --color-lavande: #ece8f4;
+  --color-noir: #0a0a0d;
+  --color-noir-soft: #15161c;
+  --color-noir-clair: #1f2129;
+  --color-ciel: #87ceeb;
+  --color-ciel-clair: #b9e4f5;
+  --color-ciel-fonce: #4fa9d1;
+  --color-brume: #eef6fa;
   --color-rose: #c8102e;
   --color-creme: #fbf7f0;
 
@@ -31,8 +31,8 @@
   body {
     @apply min-h-dvh font-sans text-creme antialiased;
     background:
-      linear-gradient(180deg, #2b2147 0, var(--color-nuit) 32rem) no-repeat,
-      var(--color-nuit);
+      linear-gradient(180deg, #13202a 0, var(--color-noir) 32rem) no-repeat,
+      var(--color-noir);
   }
   input,
   textarea,
@@ -43,26 +43,26 @@
 }
 
 @layer components {
-  /* ---------- Boutons : rectangles or, coins à peine arrondis ---------- */
+  /* ---------- Boutons : rectangles bleu ciel, coins à peine arrondis ---------- */
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-[3px] px-6 py-3 font-sans text-sm tracking-wide transition
       disabled:cursor-not-allowed disabled:opacity-50;
   }
-  .btn-or {
-    @apply bg-or text-nuit shadow-[0_6px_20px_-8px_rgb(245_196_106/0.7)] hover:bg-or-clair
-      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-or;
+  .btn-ciel {
+    @apply bg-ciel text-noir shadow-[0_6px_20px_-8px_rgb(135_206_235/0.7)] hover:bg-ciel-clair
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ciel;
   }
   .btn-ghost {
-    @apply border border-or/60 text-or hover:bg-or/10;
+    @apply border border-ciel/60 text-ciel hover:bg-ciel/10;
   }
   .btn-rose {
     @apply bg-rose text-creme hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose;
   }
 
-  /* ---------- Champs : clairs sur fond violet ---------- */
+  /* ---------- Champs : clairs sur fond noir ---------- */
   .field {
-    @apply w-full rounded-[3px] border border-transparent bg-lavande px-4 py-3 font-sans text-base text-nuit placeholder:text-nuit/40
-      focus:border-or focus:outline-none focus:ring-2 focus:ring-or/50;
+    @apply w-full rounded-[3px] border border-transparent bg-brume px-4 py-3 font-sans text-base text-noir placeholder:text-noir/40
+      focus:border-ciel focus:outline-none focus:ring-2 focus:ring-ciel/50;
   }
   .label {
     @apply mb-1.5 block font-sans text-sm text-creme;
@@ -73,33 +73,33 @@
     @apply relative shadow-[0_24px_60px_-20px_rgb(0_0_0/0.6)];
     background:
       url('/img/topo.svg') center / 520px auto,
-      var(--color-nuit-soft);
+      var(--color-noir-soft);
   }
   .panel-inner {
-    @apply rounded-[3px] bg-nuit/70;
+    @apply rounded-[3px] bg-noir/70;
   }
   .card {
     @apply relative rounded-[4px] shadow-[0_24px_60px_-20px_rgb(0_0_0/0.6)];
     background:
       url('/img/topo.svg') center / 520px auto,
-      var(--color-nuit-soft);
+      var(--color-noir-soft);
   }
 
   /* ---------- Titres ---------- */
   .title-script {
-    @apply font-script font-normal leading-tight text-or;
+    @apply font-script font-normal leading-tight text-ciel;
   }
   .title-display {
     @apply font-display tracking-wide text-creme uppercase;
   }
-  /* Titre de section encadré de deux fines lignes or */
+  /* Titre de section encadré de deux fines lignes bleu ciel */
   .section-title {
-    @apply flex items-center gap-4 font-script text-4xl leading-none text-or sm:text-5xl;
+    @apply flex items-center gap-4 font-script text-4xl leading-none text-ciel sm:text-5xl;
   }
   .section-title::before,
   .section-title::after {
     content: '';
-    @apply h-px flex-1 bg-or/50;
+    @apply h-px flex-1 bg-ciel/50;
   }
   .eyebrow {
     @apply font-sans text-xs tracking-[0.3em] text-creme/80 uppercase;

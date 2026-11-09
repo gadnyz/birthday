@@ -12,7 +12,7 @@ import { Icon } from './icon';
       }
       <div class="envelope relative mx-auto aspect-[4/3] w-full">
         <div class="back absolute inset-0 rounded-lg"></div>
-        <div class="letter absolute inset-x-4 top-4 bottom-2 rounded-md bg-creme p-4 text-nuit shadow-inner">
+        <div class="letter absolute inset-x-4 top-4 bottom-2 rounded-md bg-creme p-4 text-noir shadow-inner">
           <p class="font-script text-3xl text-rose">{{ title() }}</p>
         </div>
         <div class="front absolute inset-0 rounded-lg"></div>

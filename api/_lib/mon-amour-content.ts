@@ -8,18 +8,27 @@
  */
 export const monAmourContent = {
   /** Signature affichée en bas de la lettre. */
-  from: 'Ton fiancé',
+  from: 'With much love, Gavi',
 
   /** Identifiant YouTube du clip officiel KS Bloom – « La Mour » (ex. « dQw4w9WgXcQ »).
    *  Peut aussi être défini par la variable d'environnement MON_AMOUR_YOUTUBE_ID. */
   youtubeId: 'urKi73dMKjA',
 
   letter: {
-    title: 'Ma Victorine,',
+    title: 'Chérie,',
     paragraphs: [
-      "Aujourd'hui, le monde entier fête ta naissance, mais moi, je fête chaque jour la chance de t'avoir trouvée.",
-      "[À personnaliser] Raconte-lui ici ce que tu ressens, un souvenir précis, une promesse pour l'année qui vient…",
-      'Joyeux anniversaire, mon amour. Je suis fier de toi, et je suis à toi.',
+      "Je t'aime, je t'aime, je t'aime.",
+      "Tu es la première personne à qui j'ai dit ces mots : je t'aime.",
+      "Au début, c'était très difficile, même de prononcer le mot « chérie ». Mais maintenant, je peux le dire aisément, grâce à toi.",
+      "Tu m'as appris à aimer.",
+      'Heart, tu es précieuse pour moi. Chérie, tu es unique pour moi.',
+      "Tu es ma perle rare, la seule avec qui j'ai envie de passer toute ma vie sur terre. Mon amour, les mots du dictionnaire sont limités.",
+      'Je me rappelle notre premier rendez-vous, après la conférence de Tshipama.',
+      "Je me rappelle notre rendez-vous au zoo de Lubumbashi : une journée passée avec toi, c'est comme deux secondes.",
+      "Je me rappelle encore, et surtout, notre tout premier baiser. J'ai envie de le refaire, mais je prie Dieu que le prochain soit devant l'officier de l'état civil, puis à l'église, et ensuite tous les jours, à deux, dans notre chambre, dans notre lit orné de fleurs et bien parfumé.",
+      "Je n'oublierai jamais ton sacrifice : quitter Bukavu et venir à Lubumbashi, en grande partie pour moi.",
+      'Je te souhaite tout le meilleur du monde, mi amor.',
+      'Sweet Girl, I LOVE YOU!!!',
     ],
   },
 

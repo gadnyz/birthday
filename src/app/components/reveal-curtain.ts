@@ -17,7 +17,7 @@ import { RoseRain } from './rose-rain';
             <p class="title-script mt-4 text-5xl sm:text-6xl">{{ 'home.birthday' | transloco }}</p>
             <h1 class="title-display mt-3 text-6xl sm:text-7xl">Victorine</h1>
             <p class="mt-4 text-sm text-creme/80">09 · 11 · 2026</p>
-            <button type="button" class="btn btn-or mt-8" (click)="open()">
+            <button type="button" class="btn btn-ciel mt-8" (click)="open()">
               <app-icon name="mail" class="size-4" /> {{ 'home.tapToOpen' | transloco }}
             </button>
           </app-deco-frame>
@@ -31,7 +31,7 @@ import { RoseRain } from './rose-rain';
   `,
   styles: `
     .screen {
-      background: linear-gradient(180deg, #2b2147, var(--color-nuit) 70%);
+      background: linear-gradient(180deg, #13202a, var(--color-noir) 70%);
       transition: opacity 0.9s ease, transform 0.9s ease;
     }
     .screen.leaving {

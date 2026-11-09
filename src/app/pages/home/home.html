@@ -12,10 +12,10 @@
       <p class="title-script mt-4 text-5xl sm:text-6xl">{{ 'home.birthday' | transloco }}</p>
       <h1 class="title-display mt-3 text-6xl sm:text-7xl">Victorine</h1>
       <p class="mt-4 inline-flex items-center gap-2 text-sm text-creme/85">
-        <app-icon name="secret" class="size-4 text-or" /> {{ 'home.secret' | transloco }}
+        <app-icon name="secret" class="size-4 text-ciel" /> {{ 'home.secret' | transloco }}
       </p>
       <div>
-        <a href="#mot" class="btn btn-or mt-7 py-2.5" (click)="scrollTo($event, 'mot')">
+        <a href="#mot" class="btn btn-ciel mt-7 py-2.5" (click)="scrollTo($event, 'mot')">
           <app-icon name="pen" class="size-4" /> {{ 'home.leaveWord' | transloco }}
         </a>
       </div>
@@ -86,7 +86,7 @@
       <p class="title-script mt-4 text-5xl sm:text-6xl">{{ 'home.birthday' | transloco }}</p>
       <h1 class="title-display mt-3 text-6xl sm:text-7xl">Victorine</h1>
       <p class="mx-auto mt-4 max-w-xs text-sm text-creme/85">{{ 'home.revealedSubtitle' | transloco }}</p>
-      <a routerLink="/souvenirs" class="btn btn-or mt-7 py-2.5">
+      <a routerLink="/souvenirs" class="btn btn-ciel mt-7 py-2.5">
         <app-icon name="heart" [filled]="true" class="size-4" /> {{ 'home.openWall' | transloco }}
       </a>
     </app-deco-frame>
@@ -133,7 +133,7 @@
 <!-- Signature -->
 <footer class="mx-auto max-w-md px-4 pt-6 pb-14 text-center text-sm text-creme/85">
   @if (!reveal.revealed()) {
-    <p class="inline-flex items-center gap-2 text-or-clair">
+    <p class="inline-flex items-center gap-2 text-ciel-clair">
       <app-icon name="secret" class="size-4" /> {{ 'home.dontTell' | transloco }}
     </p>
   }

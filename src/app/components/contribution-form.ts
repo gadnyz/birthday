@@ -14,7 +14,7 @@ const PROFILE_KEY = 'vn-author';
   template: `
     @if (done()) {
       <div class="panel-inner p-8 text-center animate-float-up">
-        <app-icon name="heart" [filled]="true" class="size-12 text-or" />
+        <app-icon name="heart" [filled]="true" class="size-12 text-ciel" />
         <p class="mt-4 text-2xl text-creme">{{ (revealed() ? 'form.thanksRevealed' : 'form.thanks') | transloco }}</p>
         <button type="button" class="btn btn-ghost mt-6" (click)="reset()">{{ 'form.another' | transloco }}</button>
       </div>
@@ -49,7 +49,7 @@ const PROFILE_KEY = 'vn-author';
           @if (photoPreview(); as src) {
             <div class="relative overflow-hidden rounded-[3px]">
               <img [src]="src" alt="" class="max-h-72 w-full object-cover" />
-              <button type="button" class="absolute top-2 right-2 rounded-full bg-nuit/80 px-3 py-1 font-sans text-xs" (click)="clearPhoto()">
+              <button type="button" class="absolute top-2 right-2 rounded-full bg-noir/80 px-3 py-1 font-sans text-xs" (click)="clearPhoto()">
                 {{ 'form.remove' | transloco }}
               </button>
             </div>
@@ -73,7 +73,7 @@ const PROFILE_KEY = 'vn-author';
           </p>
         }
 
-        <button type="submit" class="btn btn-or w-full py-3.5 text-base sm:w-auto sm:px-10" [disabled]="busy()">
+        <button type="submit" class="btn btn-ciel w-full py-3.5 text-base sm:w-auto sm:px-10" [disabled]="busy()">
           @if (progress() !== null) {
             {{ 'form.uploading' | transloco: { p: progress() } }}
           } @else if (busy()) {
@@ -95,14 +95,14 @@ const PROFILE_KEY = 'vn-author';
       justify-content: center;
       gap: 0.5rem;
       border-radius: 3px;
-      border: 1.5px dashed rgb(245 196 106 / 0.45);
-      background: rgb(245 196 106 / 0.05);
+      border: 1.5px dashed rgb(135 206 235 / 0.45);
+      background: rgb(135 206 235 / 0.05);
       font-family: var(--font-sans);
       font-size: 0.875rem;
-      color: var(--color-or-clair);
+      color: var(--color-ciel-clair);
       transition: background 0.2s;
     }
-    .drop-zone:hover { background: rgb(245 196 106 / 0.12); }
+    .drop-zone:hover { background: rgb(135 206 235 / 0.12); }
   `,
 })
 export class ContributionForm implements OnDestroy {

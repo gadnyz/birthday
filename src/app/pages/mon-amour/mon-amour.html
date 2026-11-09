@@ -41,7 +41,7 @@
         </div>
 
         @if (letterOpen()) {
-          <article class="letter-paper mt-6 rounded-2xl p-6 text-left text-nuit shadow-2xl sm:p-10 animate-float-up">
+          <article class="letter-paper mt-6 rounded-2xl p-6 text-left text-noir shadow-2xl sm:p-10 animate-float-up">
             <p class="font-script text-4xl text-rose">{{ c.letter.title }}</p>
             @for (p of c.letter.paragraphs; track $index) {
               <p class="mt-4 text-xl leading-relaxed">{{ p }}</p>

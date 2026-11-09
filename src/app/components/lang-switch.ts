@@ -8,7 +8,7 @@ import type { Lang } from '../services/messages.service';
 @Component({
   selector: 'app-lang-switch',
   template: `
-    <nav class="flex items-center gap-1 rounded-[4px] border border-or/30 p-1 font-sans text-xs" aria-label="Langue / Language">
+    <nav class="flex items-center gap-1 rounded-[4px] border border-ciel/30 p-1 font-sans text-xs" aria-label="Langue / Language">
       @for (l of langs; track l) {
         <button
           type="button"
@@ -19,7 +19,7 @@ import type { Lang } from '../services/messages.service';
             active() === l
               ? accent() === 'rose'
                 ? 'bg-rose text-creme'
-                : 'bg-or text-nuit'
+                : 'bg-ciel text-noir'
               : 'text-creme/60 hover:text-creme'
           "
         >
@@ -31,7 +31,7 @@ import type { Lang } from '../services/messages.service';
 })
 export class LangSwitch {
   private readonly transloco = inject(TranslocoService);
-  readonly accent = input<'or' | 'rose'>('or');
+  readonly accent = input<'ciel' | 'rose'>('ciel');
   protected readonly langs = LANGS;
   protected readonly active = toSignal(this.transloco.langChanges$, { initialValue: this.transloco.getActiveLang() });
 

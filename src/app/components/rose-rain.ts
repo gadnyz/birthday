@@ -13,8 +13,8 @@ interface Drop {
   color: string;
 }
 
-// Or du thème + pastels des ballons (rose, vert d'eau, bleu) + crème
-const CONFETTI = ['#F5C46A', '#FBDC9C', '#F4B8C8', '#B9DCC4', '#B8D8EE', '#FBF7F0'];
+// Bleus ciel, blanc et argent : les couleurs de Victorine
+const CONFETTI = ['#87CEEB', '#B9E4F5', '#4FA9D1', '#FFFFFF', '#DDE7EE', '#5B9BD5'];
 
 /**
  * Pluie décorative plein écran (roses, cœurs, confettis, pétales).
@@ -98,7 +98,7 @@ export class RoseRain {
       sway: (Math.random() - 0.5) * 160,
       color:
         kind === 'hearts'
-          ? ['#F5C46A', '#F4B8C8', '#B8D8EE'][id % 3]!
+          ? ['#87CEEB', '#B9E4F5', '#4FA9D1'][id % 3]!
           : kind === 'petals' || kind === 'roses'
             ? ['#C8102E', '#A50D26', '#E0314B'][id % 3]!
             : CONFETTI[id % CONFETTI.length]!,

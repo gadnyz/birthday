@@ -11,7 +11,7 @@ import { RevealService } from '../services/reveal.service';
       @for (p of parts(); track p.key) {
         <div
           class="flex w-16 flex-col items-center rounded-[3px] py-2.5 sm:w-20 sm:py-3"
-          [class]="accent() === 'rose' ? 'bg-rose text-creme' : 'bg-or text-nuit'"
+          [class]="accent() === 'rose' ? 'bg-rose text-creme' : 'bg-ciel text-noir'"
         >
           <span class="font-display text-3xl leading-none tabular-nums sm:text-4xl">{{ p.value }}</span>
           <span class="mt-1 font-sans text-[10px] sm:text-xs">{{ 'countdown.' + p.key | transloco }}</span>
@@ -23,7 +23,7 @@ import { RevealService } from '../services/reveal.service';
 export class Countdown {
   private readonly clock = inject(RevealService);
   readonly target = input.required<number>();
-  readonly accent = input<'or' | 'rose'>('or');
+  readonly accent = input<'ciel' | 'rose'>('ciel');
 
   protected readonly parts = computed(() => {
     let s = Math.max(0, Math.floor((this.target() - this.clock.now()) / 1000));

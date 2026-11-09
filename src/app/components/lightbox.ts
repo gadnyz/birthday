@@ -13,7 +13,7 @@ export interface LightboxItem {
   imports: [Icon],
   template: `
     @if (current(); as item) {
-      <div class="fixed inset-0 z-50 flex flex-col bg-nuit/95 backdrop-blur" role="dialog" aria-modal="true" (click)="close.emit()">
+      <div class="fixed inset-0 z-50 flex flex-col bg-noir/95 backdrop-blur" role="dialog" aria-modal="true" (click)="close.emit()">
         <div class="flex justify-end p-3">
           <button type="button" class="rounded-full p-3 leading-none text-creme/80 hover:text-creme" aria-label="Fermer" (click)="close.emit()">
             <app-icon name="x" class="size-7" />
@@ -49,7 +49,7 @@ export interface LightboxItem {
       height: 3rem;
       border-radius: 9999px;
       background: rgb(22 22 29 / 0.7);
-      color: var(--color-or);
+      color: var(--color-ciel);
       display: flex;
       align-items: center;
       justify-content: center;
